@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary:  oklch(.21 .034 264.665);
+  --color-secondary: oklch(0.7467 0.1754 54.44);
+  --color-accent: oklch(.21 .034 264.665);
+  --color-background: oklch(.21 .034 264.665);
+  --color-text: oklch(.21 .034 264.665);
+}
+
+@theme {
+    --color-primary: var(--color-accent);
+    --color-secondary: var(--color-background);
+    --color-accent: var(--color-primary);
+    --color-background: var(--color-secondary);
+    --color-text: var(--color-text);
+}

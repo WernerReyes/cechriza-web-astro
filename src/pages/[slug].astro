@@ -1,0 +1,22 @@
+---
+import { PUBLIC_API  } from "astro:env/server";
+
+export async function get({ params }: { params: { slug: string } }) {
+  const res = await fetch(`${PUBLIC_API}/${params.slug}`);
+  const pagina = await res.json();
+
+  if (!pagina) {
+    return new Response(null, { status: 404 });
+  }
+
+  return {
+    body: await Astro.render({
+      props: { pagina },
+    }),
+  };
+}
+
+const { pagina } = Astro.props;
+---
+
+

@@ -1,0 +1,495 @@
+---
+import { Image } from "astro:assets";
+import Menu from "@lucide/astro/icons/menu";
+import ChevronDown from "@lucide/astro/icons/chevron-down";
+import Accordion from "./ui/Accordion.astro";
+---
+
+<header
+  class="flex flex-col border-b bg-primary min-h-[70px] tracking-wide relative z-50"
+>
+  <section class="py-3 bg-primary text-white text-center px-10">
+    <div
+      class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8 text-sm sm:text-base"
+    >
+      <span>014760909 / 014760348</span>
+
+      <div class="hidden sm:inline-block border-l border-white/30 h-4"></div>
+
+      <div class="flex items-center gap-2">
+        <span>Av. San Luis 2930, San Borja</span>
+      </div>
+
+      <div class="hidden sm:inline-block border-l border-white/30 h-4"></div>
+
+      <div class="flex items-center gap-2">
+        <span>ventas@cechriza.com</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="px-4 py-3 w-full flex items-center">
+    <div
+      class="flex flex-wrap items-center justify-between sm:px-10 gap-4 w-full max-w-7xl mx-auto"
+    >
+      <Image
+        src="https://dev.cechriza.com/img/cechriza.png"
+        alt="Cechriza Logo"
+        width="136"
+        height="40"
+        id="cechriza-logo"
+        class="w-56 max-sm:ml-auto"
+      />
+
+      <div
+        id="collapseMenu"
+        class="max-lg:hidden lg:block! max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50"
+      >
+        <button
+          id="toggleClose"
+          class="lg:hidden fixed top-2 right-4 z-100 rounded-full bg-primary w-9 h-9 flex items-center justify-center border border-gray-800 text-white cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-3.5 h-3.5 fill-white"
+            viewBox="0 0 320.591 320.591"
+          >
+            <path
+              d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+              data-original="#000000"></path>
+            <path
+              d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+              data-original="#000000"></path>
+          </svg>
+        </button>
+
+        <ul
+          class="lg:flex lg:gap-x-10 max-lg:space-y-3 text-white max-lg:fixed max-lg:bg-primary max-sm:w-full max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50"
+        >
+          <li class="mb-6 hidden max-lg:block">
+            <Image
+              src="https://dev.cechriza.com/img/cechriza.png"
+              alt="Cechriza Logo"
+              width="136"
+              height="40"
+              class="w-56"
+            />
+          </li>
+          <li
+            class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+          >
+            <a href="javascript:void(0)" class="text-white block font-medium"
+              >Inicio</a
+            >
+          </li>
+
+          <li
+            class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+          >
+            <a href="javascript:void(0)" class="text-white block font-medium"
+              >Nosotros</a
+            >
+          </li>
+
+          <!-- Acordeón para dispositivos móviles  -->
+          <!-- <div class="sm:hidden max-w-5xl mx-auto text-white">
+            <div class="accordion-group border-gray-800">
+              <button
+                type="button"
+                class="accordion-button cursor-pointer w-full text-base font-medium text-left px-4 py-6 flex items-center"
+              >
+                <span class="mr-4">Soluciones</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-[15px] h-[15px] fill-current ml-auto shrink-0 transition-transform duration-300 rotate-180"
+                  viewBox="0 0 451.847 451.847"
+                >
+                  <path
+                    d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z"
+                    data-original="#000000"></path>
+                </svg>
+              </button>
+              <div
+                class="accordion-content overflow-hidden max-h-96 transition-all duration-300 ease-in-out"
+              >
+                <div class="px-4 pb-6">
+                  <div class="accordion-group border-gray-800 leading-relaxed">
+                    <button
+                      type="button"
+                      class="accordion-button cursor-pointer w-full text-base font-medium text-left px-4 py-6 flex items-center"
+                    >
+                      <span class="mr-4">Procesamiento de Billetes</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-[15px] h-[15px] fill-current ml-auto shrink-0 transition-transform duration-300 rotate-180"
+                        viewBox="0 0 451.847 451.847"
+                      >
+                        <path
+                          d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z"
+                          data-original="#000000"></path>
+                      </svg>
+                    </button>
+                    <div
+                      class="accordion-content overflow-hidden max-h-96 transition-all duration-300 ease-in-out"
+                    >
+                      <div class="px-4 pb-6">
+                        <p class="text-sm leading-relaxed">
+                          <ul>
+                            <li
+                              class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="text-white block font-medium">Inicio</a
+                              >
+                            </li>
+                            <li
+                              class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="text-white block font-medium">Inicio</a
+                              >
+                            </li>
+                            <li
+                              class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="text-white block font-medium">Inicio</a
+                              >
+                            </li>
+                          </ul>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-group border-gray-800 leading-relaxed">
+                    <button
+                      type="button"
+                      class="accordion-button cursor-pointer w-full text-base font-medium text-left px-4 py-6 flex items-center"
+                    >
+                      <span class="mr-4">Procesamiento de Monedas</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-[15px] h-[15px] fill-current ml-auto shrink-0 transition-transform duration-300 rotate-180"
+                        viewBox="0 0 451.847 451.847"
+                      >
+                        <path
+                          d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z"
+                          data-original="#000000"></path>
+                      </svg>
+                    </button>
+                    <div
+                      class="accordion-content overflow-hidden max-h-96 transition-all duration-300 ease-in-out"
+                    >
+                      <div class="px-4 pb-6">
+                        <p class="text-sm leading-relaxed">
+                          <ul>
+                            <li
+                              class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="text-white block font-medium">Inicio</a
+                              >
+                            </li>
+                            <li
+                              class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="text-white block font-medium">Inicio</a
+                              >
+                            </li>
+                            <li
+                              class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="text-white block font-medium">Inicio</a
+                              >
+                            </li>
+                          </ul>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="lg:hidden max-w-5xl mx-auto text-white">
+            <Accordion title="Soluciones">
+              <Accordion deep={2} title="Procesamiento de Billetes">
+                <ul>
+                  <li
+                    class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="text-white block font-medium">Inicio</a
+                    >
+                  </li>
+                  <li
+                    class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="text-white block font-medium">Inicio</a
+                    >
+                  </li>
+                  <li
+                    class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="text-white block font-medium">Inicio</a
+                    >
+                  </li>
+                </ul>
+              </Accordion>
+              <Accordion deep={2} title="Procesamiento de Monedas">
+                <ul>
+                  <li
+                    class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="text-white block font-medium">Inicio</a
+                    >
+                  </li>
+                  <li
+                    class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="text-white block font-medium">Inicio</a
+                    >
+                  </li>
+                  <li
+                    class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="text-white block font-medium">Inicio</a
+                    >
+                  </li>
+                </ul>
+              </Accordion>
+            </Accordion>
+          </div>
+
+          <!-- Menú desplegable para pantallas grandes -->
+          <li class="max-lg:hidden max-lg:p-3 relative group">
+            <!-- NIVEL 1 -->
+            <a
+              href="javascript:void(0)"
+              class="flex items-center font-semibold text-white"
+            >
+              Soluciones
+              <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                class="ml-1 fill-current transition-transform duration-200 group-hover:rotate-180"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 16a1 1 0 0 1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42l5.29 5.3 5.29-5.29a1 1 0 0 1 1.41 1.41l-6 6a1 1 0 0 1-.7.29z"
+                ></path>
+              </svg> -->
+              <ChevronDown
+                class="w-4 h-4 ml-1 fill-current transition-transform duration-200 group-hover:rotate-180"
+              />
+            </a>
+
+            <!-- NIVEL 2 -->
+            <ul
+              class="max-sm:hidden absolute left-0 top-full mt-2 min-w-[250px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:translate-y-1"
+            >
+              <li class="relative group/sub border-b border-gray-700">
+                <a
+                  href="javascript:void(0)"
+                  class="flex justify-between items-center px-4 py-2 text-sm font-medium"
+                >
+                  Procesamiento de Billetes
+                  <!-- <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    class="ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 18a1 1 0 0 1-.71-.29 1 1 0 0 1 0-1.41L13.59 11 8.3 5.7a1 1 0 1 1 1.41-1.41l6 6a1 1 0 0 1 0 1.41l-6 6A1 1 0 0 1 9 18z"
+                    ></path>
+                  </svg> -->
+                  <ChevronDown
+                    class="w-4 h-4 ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180"
+                  />
+                </a>
+
+                <!-- NIVEL 3 (solo visible al pasar sobre el segundo nivel) -->
+                <ul
+                  class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5"
+                >
+                  <li class="relative border-b border-gray-700">
+                    <a
+                      href="#"
+                      class="relative inline-block px-4 py-2 text-sm font-medium
+           after:content-[''] after:absolute after:left-0 after:bottom-0
+           after:h-0.5 after:bg-secondary after:w-full
+           after:origin-left after:scale-x-0
+           after:transition-transform after:duration-300
+           hover:after:scale-x-100"
+                    >
+                      Contadoras de Billetes
+                    </a>
+                  </li>
+
+                  <li class="relative border-b border-gray-700">
+                    <a
+                      href="#"
+                      class="relative inline-block px-4 py-2 text-sm font-medium
+           after:content-[''] after:absolute after:left-0 after:bottom-0
+           after:h-0.5 after:bg-secondary after:w-full
+           after:origin-left after:scale-x-0
+           after:transition-transform after:duration-300
+           hover:after:scale-x-100"
+                    >
+                      Contadoras de Billetes
+                    </a>
+                  </li>
+                  <li class="relative border-b border-gray-700">
+                    <a
+                      href="#"
+                      class="relative inline-block px-4 py-2 text-sm font-medium
+           after:content-[''] after:absolute after:left-0 after:bottom-0
+           after:h-0.5 after:bg-secondary after:w-full
+           after:origin-left after:scale-x-0
+           after:transition-transform after:duration-300
+           hover:after:scale-x-100"
+                    >
+                      Contadoras de Billetes
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="relative group/sub border-b border-gray-700">
+                <a
+                  href="javascript:void(0)"
+                  class="flex justify-between items-center px-4 py-2 text-sm font-medium"
+                >
+                  Procesamiento de Monedas
+                  <!-- <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    class="ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 18a1 1 0 0 1-.71-.29 1 1 0 0 1 0-1.41L13.59 11 8.3 5.7a1 1 0 1 1 1.41-1.41l6 6a1 1 0 0 1 0 1.41l-6 6A1 1 0 0 1 9 18z"
+                    ></path>
+                  </svg> -->
+                  <ChevronDown
+                    class="w-4 h-4 ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180"
+                  />
+                </a>
+
+                <!-- NIVEL 3 (solo visible al pasar sobre el segundo nivel) -->
+                <ul
+                  class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5"
+                >
+                  <li class="relative border-b border-gray-700">
+                    <a
+                      href="#"
+                      class="relative inline-block px-4 py-2 text-sm font-medium
+           after:content-[''] after:absolute after:left-0 after:bottom-0
+           after:h-0.5 after:bg-secondary after:w-full
+           after:origin-left after:scale-x-0
+           after:transition-transform after:duration-300
+           hover:after:scale-x-100"
+                    >
+                      Contadoras de Billetes
+                    </a>
+                  </li>
+                  <li class="relative border-b border-gray-700">
+                    <a
+                      href="#"
+                      class="relative inline-block px-4 py-2 text-sm font-medium
+           after:content-[''] after:absolute after:left-0 after:bottom-0
+           after:h-0.5 after:bg-secondary after:w-full
+           after:origin-left after:scale-x-0
+           after:transition-transform after:duration-300
+           hover:after:scale-x-100"
+                    >
+                      Contadoras de Billetes
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li
+            class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+          >
+            <a href="javascript:void(0)" class="text-white block font-medium"
+              >Servicios Postventa</a
+            >
+          </li>
+
+          <li
+            class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+          >
+            <a href="javascript:void(0)" class="text-white block font-medium"
+              >Contacto</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <button
+        id="toggleOpen"
+        class="lg:hidden cursor-pointer ml-auto text-white"
+      >
+        <Menu class="size-7" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggleOpen = document.getElementById("toggleOpen");
+  const toggleClose = document.getElementById("toggleClose");
+  const collapseMenu = document.getElementById("collapseMenu") as HTMLElement;
+
+  function handleClick() {
+    const logo = document.getElementById("cechriza-logo");
+    if (collapseMenu?.style.display === "block") {
+      logo!.style.display = "block";
+      collapseMenu.style.display = "none";
+    } else {
+      logo!.style.display = "none";
+      collapseMenu.style.display = "block";
+    }
+  }
+
+  toggleOpen?.addEventListener("click", handleClick);
+  toggleClose?.addEventListener("click", handleClick);
+
+  window.addEventListener("resize", function () {
+    const logo = document.getElementById("cechriza-logo");
+    if (window.innerWidth >= 1024) {
+      logo!.style.display = "block";
+    }
+  });
+
+
+  
+</script>

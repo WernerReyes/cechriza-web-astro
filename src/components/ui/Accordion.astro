@@ -1,0 +1,31 @@
+---
+// Accordion.astro
+import ChevronDown from "@lucide/astro/icons/chevron-down";
+
+interface Props {
+  title: string;
+  deep?: number;
+}
+const { title, deep = 1 } = Astro.props;
+---
+
+<details class:list={[
+  deep === 1 ? "group/accordion" : "group/nested",
+  "border-b border-gray-800"
+]}>
+  <summary class="flex cursor-pointer items-center justify-between px-4 py-3 text-base font-medium text-white list-none">
+    {title}
+    <ChevronDown
+      class:list={[
+        deep === 1 ? "group-open/accordion:rotate-180" : "group-open/nested:rotate-180",
+        "ml-auto shrink-0 transition-transform duration-300"
+      ]}
+    />
+  </summary>
+
+  <div class="overflow-hidden transition-all duration-300 ease-in-out">
+    <div class="px-4 pb-6">
+      <slot />
+    </div>
+  </div>
+</details>
