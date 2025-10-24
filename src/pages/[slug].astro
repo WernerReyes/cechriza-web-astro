@@ -1,22 +1,42 @@
 ---
 import { PUBLIC_API  } from "astro:env/server";
 
-export async function get({ params }: { params: { slug: string } }) {
-  const res = await fetch(`${PUBLIC_API}/${params.slug}`);
+ async function get({ params }: any) {
+  const res = await fetch(`${PUBLIC_API}/page`);
   const pagina = await res.json();
+  console.log(pagina, params); 
 
   if (!pagina) {
     return new Response(null, { status: 404 });
   }
 
-  return {
-    body: await Astro.render({
-      props: { pagina },
-    }),
-  };
+
+//   return {
+//     body: await Astro.render({
+//       props: { pagina },
+//     }),
+//   };
 }
+console.log(Astro.params.slug);
 
-const { pagina } = Astro.props;
+// function get({ params }: any) {
+//   try {
+//     console.log("✅ Params:", params);
+//     return {
+//       body: "SSR ok: " + params.slug,
+//     };
+//   } catch (e) {
+//     console.error("❌ Error SSR:", e);
+//   }
+// }
+
+const page = await get({ params: Astro.params });
+
+console.log(page);
+
+
+
+
 ---
-
+<h1>hola mundo</h1>
 
