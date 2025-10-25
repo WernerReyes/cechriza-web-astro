@@ -1,12 +1,30 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import ContactTopBar from "../sections/ContactTopBar/ContactTopBar.astro";
+import MainNavigationMenu from "../sections/MainNavigationMenu/MainNavigationMenu.astro";
 
+import { SectionType } from "../interfaces/section.interface";
+import Layout from "../layouts/Layout.astro";
+import { getPageBySlug } from "../services/page.service";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const page = await getPageBySlug(Astro.params.slug!);
+
+const topBar = page.sections?.find(
+  (s) => s.type === SectionType.CONTACT_TOP_BAR
+);
+const navBar = page.sections?.find(
+  (s) => s.type === SectionType.MAIN_NAVIGATION_MENU
+);
+
+const hasHeader = topBar || navBar;
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={page.title}>
+  {
+    hasHeader && (
+      <header class="flex flex-col border-b bg-primary min-h-[70px] tracking-wide relative z-50">
+        {topBar && <ContactTopBar section={topBar} />}
+        {navBar && <MainNavigationMenu section={navBar} />}
+      </header>
+    )
+  }
 </Layout>
