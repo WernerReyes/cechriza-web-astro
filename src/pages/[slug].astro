@@ -1,42 +1,30 @@
 ---
-import { PUBLIC_API  } from "astro:env/server";
+import ContactTopBar from "../sections/ContactTopBar/ContactTopBar.astro";
+import MainNavigationMenu from "../sections/MainNavigationMenu/MainNavigationMenu.astro";
 
- async function get({ params }: any) {
-  const res = await fetch(`${PUBLIC_API}/page`);
-  const pagina = await res.json();
-  console.log(pagina, params); 
+import { SectionType } from "../interfaces/section.interface";
+import Layout from "../layouts/Layout.astro";
+import { getPageBySlug } from "../services/page.service";
 
-  if (!pagina) {
-    return new Response(null, { status: 404 });
-  }
+const page = await getPageBySlug(Astro.params.slug!);
 
+const topBar = page.sections?.find(
+  (s) => s.type === SectionType.CONTACT_TOP_BAR
+);
+const navBar = page.sections?.find(
+  (s) => s.type === SectionType.MAIN_NAVIGATION_MENU
+);
 
-//   return {
-//     body: await Astro.render({
-//       props: { pagina },
-//     }),
-//   };
-}
-console.log(Astro.params.slug);
-
-// function get({ params }: any) {
-//   try {
-//     console.log("✅ Params:", params);
-//     return {
-//       body: "SSR ok: " + params.slug,
-//     };
-//   } catch (e) {
-//     console.error("❌ Error SSR:", e);
-//   }
-// }
-
-const page = await get({ params: Astro.params });
-
-console.log(page);
-
-
-
-
+const hasHeader = topBar || navBar;
 ---
-<h1>hola mundo</h1>
 
+<Layout title={page.title}>
+  {
+    hasHeader && (
+      <header class="flex flex-col border-b bg-primary min-h-[70px] tracking-wide relative z-50">
+        {topBar && <ContactTopBar section={topBar} />}
+        {navBar && <MainNavigationMenu section={navBar} />}
+      </header>
+    )
+  }
+</Layout>

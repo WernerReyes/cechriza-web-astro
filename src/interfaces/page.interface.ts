@@ -1,3 +1,5 @@
+import type { Section } from "./section.interface";
+
 export interface Page{
     readonly id_page: number;
     readonly title: string;
@@ -6,5 +8,5 @@ export interface Page{
     readonly link_id: number | null;
     readonly created_at: string;
     readonly updated_at: string;
-    // readonly sections?: SectionEntity[] | null;
+    readonly sections?: Section[] | null;
 }

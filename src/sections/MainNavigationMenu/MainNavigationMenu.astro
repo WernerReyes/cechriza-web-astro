@@ -1,0 +1,168 @@
+---
+import { Image } from "astro:assets";
+import Menu from "@lucide/astro/icons/menu";
+import X from "@lucide/astro/icons/x";
+import ChevronDown from "@lucide/astro/icons/chevron-down";
+import Accordion from "../../components/ui/Accordion.astro";
+
+import Link from "./components/Link.astro";
+
+import type { Section } from "../../interfaces/section.interface";
+import LinkDropdown from "./components/LinkDropdown.astro";
+import { buildMenuTree } from "@/utils/buil-menu-tree";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props;
+---
+
+<div class="px-4 py-3 w-full flex items-center">
+  <div
+    class="flex flex-wrap items-center justify-between sm:px-10 gap-4 w-full max-w-7xl mx-auto"
+  >
+    <Image
+      src={section.image ?? "http://localhost/pagina"}
+      alt="Cechriza Logo"
+      width="136"
+      height="40"
+      id="cechriza-logo"
+      class="w-56 max-sm:ml-auto"
+    />
+
+    <div
+      id="collapseMenu"
+      class="max-lg:hidden lg:block! max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50"
+    >
+      <button
+        id="toggleClose"
+        class="lg:hidden fixed top-2 right-4 z-100 rounded-full bg-primary w-9 h-9 flex items-center justify-center border border-gray-800 text-white cursor-pointer"
+      >
+        <X class="size-4 fill-white" />
+      </button>
+
+      <ul
+        class="lg:flex lg:gap-x-10 max-lg:space-y-3 text-white max-lg:fixed max-lg:bg-primary max-sm:w-full max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50"
+      >
+        <li class="mb-6 hidden max-lg:block">
+          <Image
+            src={section.image ?? "http://localhost/pagina"}
+            alt="Cechriza Logo"
+            width="136"
+            height="40"
+            class="w-56"
+          />
+        </li>
+
+        {
+          section.menus && buildMenuTree(
+            section.menus).map((menu) => (
+              <>
+              
+                {!menu.children?.length && (
+                  <Link title={menu.title} url={menu.link?.url ?? "#"} />
+                )}
+
+                {(menu.children?.length ?? 0) > 0 && <LinkDropdown menu={menu} />}
+              </>
+            ))
+        }
+
+        <!-- <div class="lg:hidden max-w-5xl mx-auto text-white">
+          <Accordion title="Soluciones">
+            <Accordion deep={2} title="Procesamiento de Billetes">
+              <ul>
+                <li
+                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-white block font-medium">Inicio</a
+                  >
+                </li>
+                <li
+                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-white block font-medium">Inicio</a
+                  >
+                </li>
+                <li
+                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-white block font-medium">Inicio</a
+                  >
+                </li>
+              </ul>
+            </Accordion>
+            <Accordion deep={2} title="Procesamiento de Monedas">
+              <ul>
+                <li
+                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-white block font-medium">Inicio</a
+                  >
+                </li>
+                <li
+                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-white block font-medium">Inicio</a
+                  >
+                </li>
+                <li
+                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-white block font-medium">Inicio</a
+                  >
+                </li>
+              </ul>
+            </Accordion>
+          </Accordion>
+        </div> -->
+
+      
+      </ul>
+    </div>
+
+    <button id="toggleOpen" class="lg:hidden cursor-pointer ml-auto text-white">
+      <Menu class="size-7" />
+    </button>
+  </div>
+</div>
+
+<script>
+  const toggleOpen = document.getElementById("toggleOpen");
+  const toggleClose = document.getElementById("toggleClose");
+  const collapseMenu = document.getElementById("collapseMenu") as HTMLElement;
+
+  function handleClick() {
+    const logo = document.getElementById("cechriza-logo");
+    if (collapseMenu?.style.display === "block") {
+      logo!.style.display = "block";
+      collapseMenu.style.display = "none";
+    } else {
+      logo!.style.display = "none";
+      collapseMenu.style.display = "block";
+    }
+  }
+
+  toggleOpen?.addEventListener("click", handleClick);
+  toggleClose?.addEventListener("click", handleClick);
+
+  window.addEventListener("resize", function () {
+    const logo = document.getElementById("cechriza-logo");
+    if (window.innerWidth >= 1024) {
+      logo!.style.display = "block";
+    }
+  });
+</script>

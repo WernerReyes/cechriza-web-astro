@@ -1,0 +1,35 @@
+---
+import type { Section } from "../../interfaces/section.interface";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props;
+---
+
+<section class="py-3 bg-primary text-white text-center px-10">
+  <div
+    class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8 text-sm sm:text-base"
+  >
+    {
+      section.section_items &&
+        section.section_items.map((item, i) => (
+          <>
+            {i > 0 && (
+              <div class="hidden sm:inline-block border-l border-white/30 h-4" />
+            )}
+
+            <div class="flex items-center gap-2">
+              <img
+                src={item.icon}
+                alt={item.title}
+                class="w-5 h-5 object-contain"
+              />
+              <span>{item.title}</span>
+            </div>
+          </>
+        ))
+    }
+  </div>
+</section>

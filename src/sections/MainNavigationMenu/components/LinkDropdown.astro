@@ -1,0 +1,130 @@
+---
+import ChevronDown from "@lucide/astro/icons/chevron-down";
+import type { Menu } from "@/interfaces/menu.interface";
+import Accordion from "@/components/ui/Accordion.astro";
+
+interface Props {
+  menu: Menu;
+}
+
+const { menu } = Astro.props;
+
+const subMenuLinkClass =
+  "relative inline-block px-4 cursor-pointer py-2 text-sm font-medium \
+  after:content-[''] after:absolute after:left-0 after:bottom-0 \
+  after:h-0.5 after:bg-secondary after:w-full \
+  after:origin-left after:scale-x-0 \
+  after:transition-transform after:duration-300 \
+  hover:after:scale-x-100";
+
+const hasChildren = (menuItem: Menu): boolean => {
+  return (menuItem.children?.length ?? 0) > 0;
+};
+---
+
+{/* <!-- Screen for Desktop and Tablet --> */}
+<li class="max-lg:hidden max-lg:p-3 relative group">
+  <!-- NIVEL 1 -->
+  <a
+    href="javascript:void(0)"
+    class="flex items-center font-semibold text-white"
+  >
+    {menu.title}
+
+    <ChevronDown
+      class="w-4 h-4 ml-1 fill-current transition-transform duration-200 group-hover:rotate-180"
+    />
+  </a>
+
+  <!-- NIVEL 2 -->
+  <ul
+    class="max-sm:hidden absolute left-0 top-full mt-2 min-w-[250px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:translate-y-1"
+  >
+    {
+      hasChildren(menu) &&
+        menu.children?.map((subMenu) => (
+          <>
+            {!hasChildren(subMenu) && (
+              <li class="relative border-b border-gray-700">
+                <a href={subMenu.link?.url} class={subMenuLinkClass}>
+                  {subMenu.title}
+                </a>
+              </li>
+            )}
+
+            {hasChildren(subMenu) && (
+              <li class="relative border-b border-gray-700">
+                <a
+                  href="javascript:void(0)"
+                  class="flex justify-between items-center px-4 py-2 text-sm font-medium"
+                >
+                  {subMenu.title}
+
+                  <ChevronDown class="w-4 h-4 ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180" />
+                </a>
+
+                {/* <!-- NIVEL 3 (solo visible al pasar sobre el segundo nivel) --> */}
+                <ul class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5">
+                  {subMenu.children?.map((childMenu) => (
+                    <li class="relative border-b border-gray-700">
+                      <a href={childMenu.link?.url} class={subMenuLinkClass}>
+                        {childMenu.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            )}
+          </>
+        ))
+    }
+  </ul>
+</li>
+
+{/* <!-- Screen for Mobile --> */}
+<div class="lg:hidden max-w-5xl mx-auto text-white">
+  <Accordion title={menu.title}>
+    {
+      menu.children?.map((subMenu, i) => (
+        <>
+          {!hasChildren(subMenu) && (
+            <li
+              class:list={[
+                i > 0 && "max-lg:border-b",
+                "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
+              ]}
+            >
+              <a href={subMenu.link?.url} class="text-white block font-medium">
+                {subMenu.title}
+              </a>
+            </li>
+          )}
+
+          {hasChildren(subMenu) && (
+            <Accordion deep={2} title={subMenu.title}>
+              <ul>
+                {subMenu.children?.map((childMenu) => (
+                  <li
+                    class:list={[
+                      i > 0 && "max-lg:border-b",
+                      "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
+                    ]}
+                  >
+                    <a
+                      href={childMenu.link?.url}
+                      class="text-white block font-medium"
+                    >
+                      {childMenu.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Accordion>
+          )}
+        </>
+      ))
+    }
+  </Accordion>
+
+  
+</div>
