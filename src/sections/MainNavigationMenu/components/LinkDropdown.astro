@@ -12,7 +12,7 @@ const { menu } = Astro.props;
 const subMenuLinkClass =
   "relative inline-block px-4 cursor-pointer py-2 text-sm font-medium \
   after:content-[''] after:absolute after:left-0 after:bottom-0 \
-  after:h-0.5 after:bg-secondary after:w-full \
+  after:h-0.5 after:bg-tertiary after:w-full \
   after:origin-left after:scale-x-0 \
   after:transition-transform after:duration-300 \
   hover:after:scale-x-100";
@@ -91,7 +91,7 @@ const hasChildren = (menuItem: Menu): boolean => {
             <li
               class:list={[
                 i > 0 && "max-lg:border-b",
-                "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
+                "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
               ]}
             >
               <a href={subMenu.link?.url} class="text-white block font-medium">
@@ -107,7 +107,7 @@ const hasChildren = (menuItem: Menu): boolean => {
                   <li
                     class:list={[
                       i > 0 && "max-lg:border-b",
-                      "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
+                      "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
                     ]}
                   >
                     <a

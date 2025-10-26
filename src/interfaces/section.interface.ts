@@ -2,6 +2,8 @@ import type { Link } from "./link.interface";
 import type { Menu } from "./menu.interface";
 import type { SectionItem } from "./section-item.interface";
 
+
+
 export enum SectionType {
     HERO = 'HERO',
     WHY_US = 'WHY_US',

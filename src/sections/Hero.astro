@@ -1,0 +1,255 @@
+---
+import type { Section } from "@/interfaces/section.interface";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<section aria-roledescription="carousel" aria-live="polite">
+  <div
+    id="carousel"
+    class="flex overflow-x-hidden snap-x snap-mandatory relative"
+  >
+    {
+      section.section_items &&
+        section.section_items.map((item, index) => (
+          <article
+            class="min-w-full h-[650px] overflow-hidden bg-cover flex items-center bg-center snap-start text-white img"
+            aria-label={`Slide ${index + 1} - ${item.title}`}
+            style={`background-image: linear-gradient(
+              to bottom,
+              rgba(17, 24, 39, 1),
+              rgba(17, 24, 39, 0) 40%
+            ),
+            linear-gradient(to top, rgba(17, 24, 39, 1), rgba(17, 24, 39, 0) 40%),
+            url(${item.background_image});`}
+          >
+            <div class="md:flex items-center max-w-7xl mx-auto w-full gap-5 px-5">
+              <div class="slide-content flex-1 max-w-4xl">
+                <h1 class="text-5xl md:text-7xl mb-2.5 font-bold">
+                  {item.title}
+                </h1>
+
+                {item.subtitle && (
+                  <p class="text-xl md:text-2xl mb-5 font-medium opacity-90">
+                    {item.subtitle}
+                  </p>
+                )}
+
+                {item.description && (
+                  <p class="w-full md:text-lg opacity-90 leading-relaxed">
+                    {item.description}
+                  </p>
+                )}
+
+                {item.text_button && item.link && (
+                  <a
+                    href={item?.link.url}
+                    class="inline-flex rounded-full mt-4 py-3 px-5 text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition-colors focus:outline-hidden"
+                  >
+                    {item.text_button}
+                  </a>
+                )}
+              </div>
+
+              {item.image && (
+                <figure class="max-md:mt-5">
+                  <img
+                    class="w-lg md:w-2xl max-h-72 md:max-h-96 object-cover"
+                    src={item.image}
+                    alt={`Imagen promocional de ${item.title}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              )}
+            </div>
+          </article>
+        ))
+    }
+  </div>
+
+  <!-- Miniaturas -->
+  <nav
+    class="carrousel_miniatura bg-gray-900"
+    aria-label="Navegación de diapositivas"
+  >
+    {
+      section.section_items &&
+        section.section_items.map((item, i) => (
+          <button
+            class="items_min"
+            aria-label={`Ir al slide ${i + 1}: ${item.title}`}
+            style={`background-image: url(${item.background_image});`}
+          >
+            <span class="sr-only">{item.title}</span>
+          </button>
+        ))
+    }
+  </nav>
+</section>
+
+<style>
+ 
+  .slide-content > * {
+    opacity: 0; /* Oculta hasta que se animen */
+  }
+
+  .carrousel_miniatura {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 50px;
+  }
+
+  .carrousel_miniatura > div {
+    position: relative;
+    width: 150px;
+    height: 80px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Capa oscura encima */
+  .carrousel_miniatura > .items_min::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* oscurecimiento */
+    z-index: 1;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Texto sobre la capa */
+  .carrousel_miniatura > .items_min h1 {
+    position: relative;
+    z-index: 2;
+    font-size: 14px;
+    text-align: center;
+    padding: 0 5px;
+  }
+
+  /* El slide activo no tiene capa oscura */
+  .carrousel_miniatura > .items_min.active::before {
+    background-color: transparent;
+  }
+
+  .items_min {
+    width: 200px !important;
+    height: 150px !important;
+    background-size: cover; /* Ajusta al tamaño del div */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita repeticiones */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    color: white;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .carousel > div {
+      flex-direction: column;
+      text-align: center;
+      padding: 50px 0px;
+      gap: 0px;
+      height: auto;
+    }
+
+    .carousel .slide-content {
+      padding: 0;
+      order: 1; /* primero el texto */
+    }
+
+    .carousel img {
+      max-width: 70%;
+      margin-top: 0px;
+      order: 2; /* luego la imagen */
+    }
+
+    .carrousel_miniatura {
+      padding: 10px;
+    }
+  }
+</style>
+
+<script>
+  const carousel = document.getElementById("carousel") as HTMLElement;
+  const slides = Array.from(carousel.querySelectorAll(".img"));
+  const thumbnails = Array.from(
+    document.querySelectorAll(".carrousel_miniatura > .items_min")
+  );
+  let index = 0;
+
+  // Animación secuencial del contenido de texto
+  function animateSlideText(slide) {
+    const content = slide.querySelector(".slide-content");
+    if (content) {
+      [...content.children].forEach((el) => {
+        el.classList.remove("animate-fadeInUp");
+        el.style.opacity = "0";
+      });
+
+      setTimeout(() => {
+        [...content.children].forEach((el, i) => {
+          setTimeout(() => {
+            el.classList.add("animate-fadeInUp");
+            el.style.opacity = "1";
+          }, i * 150);
+        });
+      }, 300);
+    }
+  }
+
+  // Actualizar miniatura activa
+  function updateMiniaturaActive(i) {
+    thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+    if (thumbnails[i]) thumbnails[i].classList.add("active");
+  }
+
+  // Mostrar slide y sincronizar miniatura
+  function showSlide(idx) {
+    carousel.scrollTo({
+      left: carousel.clientWidth * idx,
+      behavior: "smooth",
+    });
+    animateSlideText(slides[idx]);
+    updateMiniaturaActive(idx);
+  }
+
+  // Avance automático
+  setInterval(() => {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  }, 8000);
+
+  // Activación manual con miniaturas
+  thumbnails.forEach((thumb, i) => {
+    thumb.addEventListener("click", () => {
+      index = i;
+      showSlide(i);
+    });
+  });
+
+  // Cargar animación inicial
+  window.addEventListener("DOMContentLoaded", () => {
+    animateSlideText(slides[0]);
+    updateMiniaturaActive(0);
+  });
+</script>

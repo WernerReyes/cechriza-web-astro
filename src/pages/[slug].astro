@@ -1,30 +1,62 @@
 ---
-import ContactTopBar from "../sections/ContactTopBar/ContactTopBar.astro";
+import ContactTopBar from "../sections/ContactTopBar.astro";
+import Hero from "../sections/Hero.astro";
 import MainNavigationMenu from "../sections/MainNavigationMenu/MainNavigationMenu.astro";
 
+import CashProcessingEquipment from "@/sections/CashProcessingEquipment.astro";
+import Clients from "@/sections/Clients.astro";
+import ValueProposition from "@/sections/ValueProposition.astro";
+import WhyUs from "@/sections/WhyUs.astro";
 import { SectionType } from "../interfaces/section.interface";
 import Layout from "../layouts/Layout.astro";
 import { getPageBySlug } from "../services/page.service";
+import ContactUs from "@/sections/ContactUs.astro";
+import Footer from "@/sections/Footer.astro";
 
 const page = await getPageBySlug(Astro.params.slug!);
 
-const topBar = page.sections?.find(
-  (s) => s.type === SectionType.CONTACT_TOP_BAR
-);
-const navBar = page.sections?.find(
-  (s) => s.type === SectionType.MAIN_NAVIGATION_MENU
-);
-
-const hasHeader = topBar || navBar;
+if (page && Astro.params.slug !== page?.slug) {
+  return Astro.redirect(`/${page.slug}`);
+}
 ---
 
-<Layout title={page.title}>
-  {
-    hasHeader && (
-      <header class="flex flex-col border-b bg-primary min-h-[70px] tracking-wide relative z-50">
-        {topBar && <ContactTopBar section={topBar} />}
-        {navBar && <MainNavigationMenu section={navBar} />}
-      </header>
-    )
-  }
-</Layout>
+{
+  page == null ? (
+    <Layout title="Mantenimiento">
+      <h1>Estamos en mantenimiento. Por favor, vuelve más tarde.</h1>
+    </Layout>
+  ) : (
+    <Layout title={page.title}>
+      {page?.sections?.map((section) => (
+        <>
+          {section.type === SectionType.CONTACT_TOP_BAR && (
+            <ContactTopBar section={section} />
+          )}
+
+          {section.type === SectionType.MAIN_NAVIGATION_MENU && (
+            <MainNavigationMenu section={section} />
+          )}
+
+          {section.type === SectionType.HERO && <Hero section={section} />}
+
+          {section.type === SectionType.WHY_US && <WhyUs section={section} />}
+
+          {section.type === SectionType.CASH_PROCESSING_EQUIPMENT && (
+            <CashProcessingEquipment section={section} />
+          )}
+
+          {section.type === SectionType.VALUE_PROPOSITION && (
+            <ValueProposition section={section} />
+          )}
+
+          {section.type === SectionType.CLIENT && <Clients section={section} />}
+
+          {section.type === SectionType.CONTACT_US && (
+            <ContactUs section={section} />
+          )}
+          {section.type === SectionType.FOOTER && <Footer section={section} />}
+        </>
+      ))}
+    </Layout>
+  )
+}

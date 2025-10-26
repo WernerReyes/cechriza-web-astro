@@ -1,0 +1,51 @@
+---
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import type { Section } from "@/interfaces/section.interface";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout>
+  <div class="md:flex items-center justify-center gap-10">
+    <!-- Texto principal -->
+    <header
+      class="w-full md:w-1/2 lg:w-2/5 text-center md:text-left mb-12 md:mb-0 animate-fadeInUp"
+    >
+      <h3 class="subtitle mb-2">
+        {section.subtitle}
+      </h3>
+      <h2 class="title mb-4">
+        {section.title}
+      </h2>
+      <p class="description">
+        {section.description}
+      </p>
+    </header>
+
+    {
+      section.section_items && (
+        // <!-- Grid de Beneficios -->
+        <div class="w-full md:w-1/2 lg:w-3/5 flex flex-wrap justify-center gap-4 animate-fadeIn">
+          {section.section_items.map((item) => (
+            <article class="bg-[#f3f4f6]  basis-full lg:basis-[calc(33.333%-1rem)] mx-auto border rounded-3xl shadow hover:shadow-xl transition-transform hover:-translate-y-1 p-8 text-center">
+              <img
+                src={item.icon}
+                alt={item.title}
+                class="size-12 mb-4 mx-auto object-contain"
+              />
+              <h4 class="text-secondary font-semibold text-xl mb-2">
+                {item.title}
+              </h4>
+              <p class="description">{item.description}</p>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</SectionLayout>
+

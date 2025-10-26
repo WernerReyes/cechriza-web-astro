@@ -1,0 +1,58 @@
+---
+import Button from "@/components/ui/Button.astro";
+import type { Section } from "@/interfaces/section.interface";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout class="bg-tg-bg">
+  <header class="text-center animate-fadeInUp">
+    <h3 class="subtitle text-center mb-5">
+      {section.title}
+    </h3>
+
+  {
+    section.text_button && section.link && (
+      <div class="w-full flex flex-col items-center text-center mb-12 rounded-lg">
+        <Button variant="solid"> Contáctanos para más información </Button>
+      </div>
+    )
+  }
+  </header>
+
+  {
+    section.section_items && (
+      <article class="flex flex-wrap justify-center -mx-4 animate-fadeIn">
+        {section.section_items.map((item) => (
+          <div class="w-full px-4 sm:w-4/5 md:w-1/2 lg:w-1/3">
+            <div class="mb-10 text-center">
+              <div class="group mx-auto mb-5 flex h-[100px] w-[100px] items-center justify-center rounded-full bg-secondary/10 hover:bg-primary text-primary sm:h-[130px] sm:w-[130px]">
+                <img
+                  src={item.icon}
+                  alt={item.title}
+                  class="w-10 h-10 object-contain brightness-0 group-hover:invert"
+                />
+              </div>
+
+              <div class="text-center">
+                <h4 class="mb-3 text-secondary text-lg font-semibold">
+                  {item.title}
+                </h4>
+                {item.text_button && item.link && (
+                  <Button>
+                    <a href={item.link.url}>{item.text_button}</a>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </article>
+    )
+  }
+</SectionLayout>

@@ -1,0 +1,90 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Input from "@/components/ui/Input.astro";
+import Textarea from "@/components/ui/Textarea.astro";
+import { InputType } from "@/interfaces/section-item.interface";
+import type { Section } from "@/interfaces/section.interface";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout>
+  <div class="flex mx-auto gap-x-10">
+    <!-- Imagen -->
+    {
+      section.image && (
+        <div class="hidden lg:block lg:basis-1/2 h-full my-auto animate-fadeInLeft">
+          <img src={section.image} class="w-full h-full  object-cover" />
+        </div>
+      )
+    }
+
+    <div
+      class="py-12 basis-full mx-auto lg:basis-1/2 lg:flex lg:justify-center items-center animate-fadeInUp"
+    >
+      <div class="flex-1 mx-auto px-4 text-gray-600">
+        <header class="text-center">
+          <h3 class="title text-center">
+            {section.title}
+          </h3>
+
+          <p class="description mt-4">
+            {section.description}
+          </p>
+        </header>
+
+        <form id="contact-form" class="space-y-5 mt-12 lg:pb-12">
+          {
+            section.section_items &&
+              section.section_items.map((item) => (
+                <>
+                  {[InputType.TEXT, InputType.EMAIL].includes(
+                    item.input_type!
+                  ) && (
+                    <Input
+                      label={item.title!}
+                      type={item.input_type?.toLowerCase() as any}
+                      placeholder={item.subtitle!}
+                    />
+                  )}
+
+                  {item.input_type === InputType.TEXTAREA && (
+                    <Textarea
+                      label={item.title!}
+                      placeholder={item.subtitle!}
+                    />
+                  )}
+                </>
+              ))
+          }
+
+          {
+            section.text_button && (
+              <Button
+                type="submit"
+                variant="solid"
+                class="w-full justify-center"
+              >
+                {section.text_button}
+              </Button>
+            )
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</SectionLayout>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    alert("Formulario enviado. Nos pondremos en contacto contigo pronto.");
+    form.reset();
+  });
+</script>

@@ -1,0 +1,76 @@
+---
+import type { Section } from "@/interfaces/section.interface";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout title={section.title} description={section.description}>
+  <header class="text-center mb-12 animate-fadeInUp">
+    <h3 class="title text-center">
+      {section.title}
+    </h3>
+
+    <p class="description mt-4">
+      {section.description}
+    </p>
+  </header>
+
+  {
+    section.section_items && (
+      <article
+        class="swiper-clientes relative w-full overflow-hidden max-w-100%"
+        data-direction="right"
+        data-speed="slow"
+      >
+        <div class="swiper-wrapper">
+          {section.section_items.map((item) => (
+            <div class="swiper-slide bg-white p-8 rounded-xl card-brand hover-scale">
+              <Image
+                src={item.image!}
+                alt={item.title || "Client Logo"}
+                class="h-16 w-full mx-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                width={200}
+                height={100}
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </article>
+    )
+  }
+</SectionLayout>
+
+<script>
+  import Swiper from "swiper/bundle";
+  import "swiper/css/bundle";
+
+  const swiperClientes = new Swiper(".swiper-clientes", {
+    slidesPerView: 2,
+    centerInsufficientSlides: true,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    breakpoints: {
+      // 240: { slidesPerView: 1 },
+      640: { slidesPerView: 2 },
+      768: { slidesPerView: 3 },
+      1024: { slidesPerView: 4 }, // máximo 4
+    },
+  });
+
+  // Reactivar autoplay después de interacción manual (seguro)
+  swiperClientes.el.addEventListener("mouseleave", () => {
+    swiperClientes.autoplay.start();
+  });
+</script>

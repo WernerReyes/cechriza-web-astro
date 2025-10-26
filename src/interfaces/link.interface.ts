@@ -1,4 +1,4 @@
-import type { Page } from "astro";
+import type { Page } from "./page.interface";
 
 export enum LinkType {
     PAGE = 'PAGE',

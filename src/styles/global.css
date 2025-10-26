@@ -2,7 +2,9 @@
 
 :root {
   --color-primary:  oklch(.21 .034 264.665);
-  --color-secondary: oklch(0.7467 0.1754 54.44);
+  --color-secondary: oklch(37.16% 0.172 262.68);
+  --color-tertiary: oklch(0.7467 0.1754 54.44);
+  
   --color-accent: oklch(.21 .034 264.665);
   --color-background: oklch(.21 .034 264.665);
   --color-text: oklch(.21 .034 264.665);
@@ -10,8 +12,52 @@
 
 @theme {
     --color-primary: var(--color-accent);
-    --color-secondary: var(--color-background);
+    --color-secondary: var(--color-primary);
+    --color-tertiary: var(--color-background);
     --color-accent: var(--color-primary);
-    --color-background: var(--color-secondary);
+    --color-background: var(--color-tertiary);
     --color-text: var(--color-text);
+
+    --animate-fadeInUp: fadeInUp 0.8s ease forwards;
+    --animate-fadeIn: fadeIn 1.2s ease forwards;
 }
+
+
+  .bg-tg-bg {
+    --tw-bg-opacity: 1;
+    background-color: rgb(247 248 250 / var(--tw-bg-opacity));
+}
+
+
+.title {
+  @apply text-primary text-4xl font-extrabold leading-tight;
+}
+
+.subtitle {
+  @apply text-secondary font-bold text-2xl;
+}
+
+
+.description {
+  @apply text-text;
+}
+
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

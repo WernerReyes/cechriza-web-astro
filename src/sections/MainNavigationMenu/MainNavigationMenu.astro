@@ -2,14 +2,12 @@
 import { Image } from "astro:assets";
 import Menu from "@lucide/astro/icons/menu";
 import X from "@lucide/astro/icons/x";
-import ChevronDown from "@lucide/astro/icons/chevron-down";
-import Accordion from "../../components/ui/Accordion.astro";
 
-import Link from "./components/Link.astro";
 
 import type { Section } from "../../interfaces/section.interface";
 import LinkDropdown from "./components/LinkDropdown.astro";
 import { buildMenuTree } from "@/utils/buil-menu-tree";
+import Link from "@/components/ui/Link.astro";
 
 interface Props {
   section: Section;
@@ -18,7 +16,12 @@ interface Props {
 const { section } = Astro.props;
 ---
 
-<div class="px-4 py-3 w-full flex items-center">
+<nav
+  id="mainNavigationMenu"
+  class="px-4 py-3 w-full bg-primary flex items-center left-0 z-50
+         transition-all duration-500 ease-in-out
+         border-b border-transparent"
+>
   <div
     class="flex flex-wrap items-center justify-between sm:px-10 gap-4 w-full max-w-7xl mx-auto"
   >
@@ -28,7 +31,7 @@ const { section } = Astro.props;
       width="136"
       height="40"
       id="cechriza-logo"
-      class="w-56 max-sm:ml-auto"
+      class="h-12 w-auto object-cover max-sm:ml-auto"
     />
 
     <div
@@ -51,86 +54,24 @@ const { section } = Astro.props;
             alt="Cechriza Logo"
             width="136"
             height="40"
-            class="w-56"
+            class="h-12 w-auto object-cover"
           />
         </li>
 
         {
-          section.menus && buildMenuTree(
-            section.menus).map((menu) => (
+          section.menus &&
+            buildMenuTree(section.menus).map((menu) => (
               <>
-              
                 {!menu.children?.length && (
-                  <Link title={menu.title} url={menu.link?.url ?? "#"} />
+                  <Link title={menu.title} url={menu.link?.page?.slug ?? "#"} />
                 )}
 
-                {(menu.children?.length ?? 0) > 0 && <LinkDropdown menu={menu} />}
+                {(menu.children?.length ?? 0) > 0 && (
+                  <LinkDropdown menu={menu} />
+                )}
               </>
             ))
         }
-
-        <!-- <div class="lg:hidden max-w-5xl mx-auto text-white">
-          <Accordion title="Soluciones">
-            <Accordion deep={2} title="Procesamiento de Billetes">
-              <ul>
-                <li
-                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="text-white block font-medium">Inicio</a
-                  >
-                </li>
-                <li
-                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="text-white block font-medium">Inicio</a
-                  >
-                </li>
-                <li
-                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="text-white block font-medium">Inicio</a
-                  >
-                </li>
-              </ul>
-            </Accordion>
-            <Accordion deep={2} title="Procesamiento de Monedas">
-              <ul>
-                <li
-                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="text-white block font-medium">Inicio</a
-                  >
-                </li>
-                <li
-                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="text-white block font-medium">Inicio</a
-                  >
-                </li>
-                <li
-                  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-secondary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="text-white block font-medium">Inicio</a
-                  >
-                </li>
-              </ul>
-            </Accordion>
-          </Accordion>
-        </div> -->
-
-      
       </ul>
     </div>
 
@@ -138,7 +79,7 @@ const { section } = Astro.props;
       <Menu class="size-7" />
     </button>
   </div>
-</div>
+</nav>
 
 <script>
   const toggleOpen = document.getElementById("toggleOpen");
@@ -163,6 +104,16 @@ const { section } = Astro.props;
     const logo = document.getElementById("cechriza-logo");
     if (window.innerWidth >= 1024) {
       logo!.style.display = "block";
+    }
+  });
+
+  window.addEventListener("scroll", function () {
+    const nav = document.querySelector("nav");
+
+    if (window.scrollY > 0) {
+      nav?.classList.add("shadow-md", "fixed", "top-0", "border-gray-800");
+    } else {
+      nav?.classList.remove("shadow-md", "fixed", "top-0", "border-gray-800");
     }
   });
 </script>
