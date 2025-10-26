@@ -4,13 +4,17 @@ import type { ApiResponse } from "../interfaces/api-response";
 import type { Page } from "../interfaces/page.interface";
 
 export async function getPageBySlug(slug: string): Promise<Page | null> {
-  const res = await fetch(`${PUBLIC_API}/page/${slug}`);
+  const res = await fetch(`${PUBLIC_API}/page/${slug}`, {
+    credentials: "include",
+  });
+  const data = (await res.json()) as ApiResponse<Page>;
 
-  if (!res.ok) {
+  console.log({ data })
+
+  if (!data.success) {
     return null;
   }
 
-  const data = (await res.json()) as ApiResponse<Page>;
 
   return data.data;
 }
