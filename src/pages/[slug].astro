@@ -27,7 +27,7 @@ if (page && Astro.params.slug !== page?.slug) {
     </Layout>
   ) : (
     <Layout title={page.title}>
-      {page?.sections?.map((section) => (
+      {page?.sections?.length ? page.sections.map((section) => (
         <>
           {section.type === SectionType.CONTACT_TOP_BAR && (
             <ContactTopBar section={section} />
@@ -56,7 +56,9 @@ if (page && Astro.params.slug !== page?.slug) {
           )}
           {section.type === SectionType.FOOTER && <Footer section={section} />}
         </>
-      ))}
+      )) : (
+        <h1>Estamos construyendo esta página. Vuelve pronto.</h1>
+      )}
     </Layout>
   )
 }

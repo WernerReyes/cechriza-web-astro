@@ -7,7 +7,7 @@ interface Props {
   menu: Menu;
 }
 
-const { menu } = Astro.props;
+const { menu } = Astro.props as Props;
 
 const subMenuLinkClass =
   "relative inline-block px-4 cursor-pointer py-2 text-sm font-medium \
@@ -38,7 +38,7 @@ const hasChildren = (menuItem: Menu): boolean => {
 
   <!-- NIVEL 2 -->
   <ul
-    class="max-sm:hidden absolute left-0 top-full mt-2 min-w-[250px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:translate-y-1"
+    class="max-sm:hidden absolute z-10 left-0 top-full mt-2 min-w-[250px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:translate-y-1"
   >
     {
       hasChildren(menu) &&
@@ -46,7 +46,7 @@ const hasChildren = (menuItem: Menu): boolean => {
           <>
             {!hasChildren(subMenu) && (
               <li class="relative border-b border-gray-700">
-                <a href={subMenu.link?.url} class={subMenuLinkClass}>
+                <a href={subMenu.link?.page?.slug} class={subMenuLinkClass}>
                   {subMenu.title}
                 </a>
               </li>
@@ -67,7 +67,7 @@ const hasChildren = (menuItem: Menu): boolean => {
                 <ul class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5">
                   {subMenu.children?.map((childMenu) => (
                     <li class="relative border-b border-gray-700">
-                      <a href={childMenu.link?.url} class={subMenuLinkClass}>
+                      <a href={childMenu.link?.page?.slug} class={subMenuLinkClass}>
                         {childMenu.title}
                       </a>
                     </li>
