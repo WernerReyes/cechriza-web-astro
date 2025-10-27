@@ -12,13 +12,18 @@ import Layout from "../layouts/Layout.astro";
 import { getPageBySlug } from "../services/page.service";
 import ContactUs from "@/sections/ContactUs.astro";
 import Footer from "@/sections/Footer.astro";
-
+import { icons, type IconProps } from '@lucide/astro';
 const page = await getPageBySlug(Astro.params.slug!);
+
 
 if (page && Astro.params.slug !== page?.slug) {
   return Astro.redirect(`/${page.slug}`);
 }
+
+// const { name, ...restProps } = Astro.props;
+// const Icon = icons['CheckLine'];
 ---
+<!-- <Icon {...restProps} color="red" size={24} stroke-width={20} /> -->
 
 {
   page == null ? (
@@ -41,9 +46,9 @@ if (page && Astro.params.slug !== page?.slug) {
 
           {section.type === SectionType.WHY_US && <WhyUs section={section} />}
 
-          {section.type === SectionType.CASH_PROCESSING_EQUIPMENT && (
-            <CashProcessingEquipment section={section} />
-          )}
+            {section.type === SectionType.CASH_PROCESSING_EQUIPMENT && (
+              <CashProcessingEquipment section={section} />
+            )}
 
           {section.type === SectionType.VALUE_PROPOSITION && (
             <ValueProposition section={section} />
