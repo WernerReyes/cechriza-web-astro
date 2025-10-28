@@ -1,0 +1,32 @@
+---
+import {
+  IconType,
+  type SectionItem,
+} from "@/interfaces/section-item.interface";
+
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  item: SectionItem;
+}
+const { item } = Astro.props as Props;
+
+const name = item.icon?.name;
+---
+
+{
+  name && item.icon_type === IconType.LIBRARY && (
+    <Icon
+      name={`lucide:${name}`}
+      size={item.icon?.size}
+      color={item.icon?.color}
+      stroke-width={item.icon?.strokeWidth}
+    />
+  )
+}
+
+{
+  item.icon_type === IconType.IMAGE && (
+    <img src={item.icon_url} alt={item.title} class="size-6"/>
+  )
+}

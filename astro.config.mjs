@@ -3,6 +3,7 @@ import { defineConfig, envField } from 'astro/config';
 import vercel from '@astrojs/vercel/serverless';
 import tailwindcss from "@tailwindcss/vite";
 // import node from '@astrojs/node';
+import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +13,10 @@ export default defineConfig({
   redirects: {
     '/': '/home',
   },
+   integrations: [icon()],
+
   vite: {
+    
     plugins: [tailwindcss()],
   },
   env: {

@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import Menu from "@lucide/astro/icons/menu";
 import X from "@lucide/astro/icons/x";
 
+import { Icon } from "astro-icon/components";
 
 import type { Section } from "../../interfaces/section.interface";
 import LinkDropdown from "./components/LinkDropdown.astro";
@@ -42,7 +43,8 @@ const { section } = Astro.props;
         id="toggleClose"
         class="lg:hidden fixed top-2 right-4 z-100 rounded-full bg-primary w-9 h-9 flex items-center justify-center border border-gray-800 text-white cursor-pointer"
       >
-        <X class="size-4 fill-white" />
+        <!-- <X class="size-4 fill-white" /> -->
+        <Icon name="lucide:x" />
       </button>
 
       <ul
@@ -76,7 +78,8 @@ const { section } = Astro.props;
     </div>
 
     <button id="toggleOpen" class="lg:hidden cursor-pointer ml-auto text-white">
-      <Menu class="size-7" />
+      <!-- <Menu class="size-7" /> -->
+      <Icon name="lucide:menu" size="28" />
     </button>
   </div>
 </nav>

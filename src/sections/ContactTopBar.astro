@@ -1,5 +1,7 @@
 ---
-import type { Section } from "../../interfaces/section.interface";
+import IconImage from '@/components/ui/IconImage.astro';
+import type { Section } from '@/interfaces/section.interface';
+
 
 interface Props {
   section: Section;
@@ -21,11 +23,12 @@ const { section } = Astro.props;
             )}
 
             <div class="flex items-center gap-2">
-              <img
+              {/* <img
                 src={item.icon}
                 alt={item.title}
                 class="w-5 h-5 object-contain"
-              />
+              /> */}
+              <IconImage item={item} />
               <span>{item.title}</span>
             </div>
           </>

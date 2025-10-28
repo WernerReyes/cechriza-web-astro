@@ -1,5 +1,5 @@
 ---
-import ChevronRight from "@lucide/astro/icons/chevron-right";
+import { Icon } from "astro-icon/components";
 import SectionLayout from "@/layouts/SectionLayout.astro";
 import type { Section } from "@/interfaces/section.interface";
 
@@ -36,7 +36,7 @@ const { section } = Astro.props as Props;
       </p>
 
       <p class="mt-5 inline-flex items-center justify-center gap-x-1 font-medium text-blue-600">
-        <ChevronRight class="shrink-0 size-4 transition group-hover:translate-x-1" />
+        <Icon name="lucide:chevron-right" class="shrink-0 size-4 transition group-hover:translate-x-1" />
         {item.subtitle}
       </p>
     </div>

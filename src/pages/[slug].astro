@@ -1,29 +1,38 @@
 ---
-import ContactTopBar from "../sections/ContactTopBar.astro";
-import Hero from "../sections/Hero.astro";
-import MainNavigationMenu from "../sections/MainNavigationMenu/MainNavigationMenu.astro";
-
-import CashProcessingEquipment from "@/sections/CashProcessingEquipment.astro";
-import Clients from "@/sections/Clients.astro";
-import ValueProposition from "@/sections/ValueProposition.astro";
-import WhyUs from "@/sections/WhyUs.astro";
-import { SectionType } from "../interfaces/section.interface";
 import Layout from "../layouts/Layout.astro";
+import { SectionType } from "../interfaces/section.interface";
 import { getPageBySlug } from "../services/page.service";
-import ContactUs from "@/sections/ContactUs.astro";
-import Footer from "@/sections/Footer.astro";
-import { icons, type IconProps } from '@lucide/astro';
-const page = await getPageBySlug(Astro.params.slug!);
 
+const page = await getPageBySlug(Astro.params.slug!);
 
 if (page && Astro.params.slug !== page?.slug) {
   return Astro.redirect(`/${page.slug}`);
 }
 
-// const { name, ...restProps } = Astro.props;
-// const Icon = icons['CheckLine'];
+// Carga dinámica de todas las secciones disponibles en src/sections
+const sectionModules = import.meta.glob("../sections/**/*.astro");
+
+const getSectionComponent = async (type: string) => {
+  // Creamos un mapa de tipos a archivos (puedes personalizarlo)
+  const map: Record<string, string> = {
+    [SectionType.CONTACT_TOP_BAR]: "../sections/ContactTopBar.astro",
+    [SectionType.MAIN_NAVIGATION_MENU]: "../sections/MainNavigationMenu/MainNavigationMenu.astro",
+    [SectionType.HERO]: "../sections/Hero.astro",
+    [SectionType.WHY_US]: "../sections/WhyUs.astro",
+    [SectionType.CASH_PROCESSING_EQUIPMENT]: "../sections/CashProcessingEquipment.astro",
+    [SectionType.VALUE_PROPOSITION]: "../sections/ValueProposition.astro",
+    [SectionType.CLIENT]: "../sections/Clients.astro",
+    [SectionType.CONTACT_US]: "../sections/ContactUs.astro",
+    [SectionType.FOOTER]: "../sections/Footer.astro",
+  };
+
+  const path = map[type];
+  if (!path || !sectionModules[path]) return null;
+
+  const mod = await sectionModules[path]();
+  return (mod as any).default;
+};
 ---
-<!-- <Icon {...restProps} color="red" size={24} stroke-width={20} /> -->
 
 {
   page == null ? (
@@ -32,36 +41,14 @@ if (page && Astro.params.slug !== page?.slug) {
     </Layout>
   ) : (
     <Layout title={page.title}>
-      {page?.sections?.length ? page.sections.map((section) => (
-        <>
-          {section.type === SectionType.CONTACT_TOP_BAR && (
-            <ContactTopBar section={section} />
-          )}
-
-          {section.type === SectionType.MAIN_NAVIGATION_MENU && (
-            <MainNavigationMenu section={section} />
-          )}
-
-          {section.type === SectionType.HERO && <Hero section={section} />}
-
-          {section.type === SectionType.WHY_US && <WhyUs section={section} />}
-
-            {section.type === SectionType.CASH_PROCESSING_EQUIPMENT && (
-              <CashProcessingEquipment section={section} />
-            )}
-
-          {section.type === SectionType.VALUE_PROPOSITION && (
-            <ValueProposition section={section} />
-          )}
-
-          {section.type === SectionType.CLIENT && <Clients section={section} />}
-
-          {section.type === SectionType.CONTACT_US && (
-            <ContactUs section={section} />
-          )}
-          {section.type === SectionType.FOOTER && <Footer section={section} />}
-        </>
-      )) : (
+      {page.sections?.length ? (
+        await Promise.all(
+          page.sections.map(async (section) => {
+            const Section = await getSectionComponent(section.type);
+            return Section ? <Section section={section} /> : null;
+          })
+        )
+      ) : (
         <h1>Estamos construyendo esta página. Vuelve pronto.</h1>
       )}
     </Layout>

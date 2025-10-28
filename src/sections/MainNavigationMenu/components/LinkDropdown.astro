@@ -1,7 +1,8 @@
 ---
-import ChevronDown from "@lucide/astro/icons/chevron-down";
 import type { Menu } from "@/interfaces/menu.interface";
 import Accordion from "@/components/ui/Accordion.astro";
+
+import { Icon } from "astro-icon/components";
 
 interface Props {
   menu: Menu;
@@ -30,10 +31,7 @@ const hasChildren = (menuItem: Menu): boolean => {
     class="flex items-center font-semibold text-white"
   >
     {menu.title}
-
-    <ChevronDown
-      class="w-4 h-4 ml-1 fill-current transition-transform duration-200 group-hover:rotate-180"
-    />
+    <Icon name="lucide:chevron-down" class="w-4 h-4 ml-1 fill-current transition-transform duration-200 group-hover:rotate-180" />
   </a>
 
   <!-- NIVEL 2 -->
@@ -59,8 +57,7 @@ const hasChildren = (menuItem: Menu): boolean => {
                   class="flex justify-between items-center px-4 py-2 text-sm font-medium"
                 >
                   {subMenu.title}
-
-                  <ChevronDown class="w-4 h-4 ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180" />
+                  <Icon name="lucide:chevron-down" class="w-4 h-4 ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180" />
                 </a>
 
                 {/* <!-- NIVEL 3 (solo visible al pasar sobre el segundo nivel) --> */}
