@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { SectionType } from "../interfaces/section.interface";
 import { getPageBySlug } from "../services/page.service";
+import Maintenance from "@/sections/maintenance.astro";
 
 const page = await getPageBySlug(Astro.params.slug!);
 
@@ -16,10 +17,12 @@ const getSectionComponent = async (type: string) => {
   // Creamos un mapa de tipos a archivos (puedes personalizarlo)
   const map: Record<string, string> = {
     [SectionType.CONTACT_TOP_BAR]: "../sections/ContactTopBar.astro",
-    [SectionType.MAIN_NAVIGATION_MENU]: "../sections/MainNavigationMenu/MainNavigationMenu.astro",
+    [SectionType.MAIN_NAVIGATION_MENU]:
+      "../sections/MainNavigationMenu/MainNavigationMenu.astro",
     [SectionType.HERO]: "../sections/Hero.astro",
     [SectionType.WHY_US]: "../sections/WhyUs.astro",
-    [SectionType.CASH_PROCESSING_EQUIPMENT]: "../sections/CashProcessingEquipment.astro",
+    [SectionType.CASH_PROCESSING_EQUIPMENT]:
+      "../sections/CashProcessingEquipment.astro",
     [SectionType.VALUE_PROPOSITION]: "../sections/ValueProposition.astro",
     [SectionType.CLIENT]: "../sections/Clients.astro",
     [SectionType.CONTACT_US]: "../sections/ContactUs.astro",
@@ -37,7 +40,10 @@ const getSectionComponent = async (type: string) => {
 {
   page == null ? (
     <Layout title="Mantenimiento">
-      <h1>Estamos en mantenimiento. Por favor, vuelve más tarde.</h1>
+      <Maintenance
+        title="Por favor, ten paciencia con nosotros! Actualmente estamos en mantenimiento."
+        description="Nos tomará un tiempo arreglar el error. Volveremos a estar en línea."
+      />
     </Layout>
   ) : (
     <Layout title={page.title}>
@@ -49,7 +55,11 @@ const getSectionComponent = async (type: string) => {
           })
         )
       ) : (
-        <h1>Estamos construyendo esta página. Vuelve pronto.</h1>
+        // <h1>Estamos construyendo esta página. Vuelve pronto.</h1>
+        <Maintenance
+          title="Estamos construyendo esta página. Vuelve pronto."
+          description="Nos tomará un tiempo terminarla. Volveremos a estar en línea."
+        />
       )}
     </Layout>
   )
