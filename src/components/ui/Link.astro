@@ -1,14 +1,51 @@
 ---
-interface Props {
-  title: string;
-  url: string;
+import { type Link, LinkType } from "@/interfaces/link.interface";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  link?: Link | null;
+  textButton?: string;
 }
 
-const { title, url } = Astro.props;
+const { link, textButton, ...props } = Astro.props as Props;
+
+const target = link?.new_tab ? "_blank" : "_self";
 ---
 
-<li
-  class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300"
->
-  <a href={url} class="text-white block font-medium">{title}</a>
-</li>
+{
+  !link  && (
+    <a {...props} href="javascript:void(0)" target={target}>
+      {Astro.slots.default ? <slot /> : textButton}
+    </a>
+  )
+}
+
+{
+  link?.type == LinkType.PAGE && (
+    <a href={link.page?.slug} target={target} {...props}>
+      {Astro.slots.default ? <slot /> : textButton || link.title}
+    </a>
+  )
+}
+
+{
+  link?.type == LinkType.EXTERNAL && (
+    <a href={link.url} target={target} rel="noopener noreferrer" {...props}>
+      {Astro.slots.default ? <slot /> : textButton || link.title}
+    </a>
+  )
+}
+
+{
+  link?.type == LinkType.FILE && (
+    <a
+      href={link.file_url}
+      target={target}
+      rel="noopener noreferrer"
+      download
+      {...props}
+    >
+      {Astro.slots.default ? <slot /> : textButton || link.title}
+    </a>
+  )
+}

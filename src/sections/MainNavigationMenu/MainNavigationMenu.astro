@@ -1,9 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import Menu from "@lucide/astro/icons/menu";
-import X from "@lucide/astro/icons/x";
 
-import { Icon } from "astro-icon/components";
+import Icon from "@/components/ui/Icon.astro";
 
 import type { Section } from "../../interfaces/section.interface";
 import LinkDropdown from "./components/LinkDropdown.astro";
@@ -44,7 +42,7 @@ const { section } = Astro.props;
         class="lg:hidden fixed top-2 right-4 z-100 rounded-full bg-primary w-9 h-9 flex items-center justify-center border border-gray-800 text-white cursor-pointer"
       >
         <!-- <X class="size-4 fill-white" /> -->
-        <Icon name="lucide:x" />
+        <Icon name="x" />
       </button>
 
       <ul
@@ -65,7 +63,9 @@ const { section } = Astro.props;
             buildMenuTree(section.menus).map((menu) => (
               <>
                 {!menu.children?.length && (
-                  <Link title={menu.title} url={menu.link?.page?.slug ?? "#"} />
+                  <li class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300">
+                    <Link link={menu.link!} class="text-white block font-medium" />
+                  </li>
                 )}
 
                 {(menu.children?.length ?? 0) > 0 && (
@@ -79,7 +79,7 @@ const { section } = Astro.props;
 
     <button id="toggleOpen" class="lg:hidden cursor-pointer ml-auto text-white">
       <!-- <Menu class="size-7" /> -->
-      <Icon name="lucide:menu" size="28" />
+      <Icon name="menu" size="28" />
     </button>
   </div>
 </nav>

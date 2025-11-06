@@ -30,10 +30,9 @@ const { section } = Astro.props as Props;
         {
           section?.menus &&
             section.menus.map((menu) => (
-              <Link
-                url={menu?.link?.page?.slug}
-                title={menu?.link?.page?.title}
-              />
+             <li class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300">
+                <Link link={menu.link!} class="text-white block font-medium" />
+              </li>
             ))
         }
       </ul>

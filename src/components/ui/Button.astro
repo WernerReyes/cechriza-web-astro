@@ -1,6 +1,7 @@
 ---
+type Variants = "solid" | "outline" | "ghost" | "soft" | "white" | "link" | "secondary";
 interface Props {
-  variant?: "solid" | "outline" | "ghost" | "soft" | "white" | "link";
+  variant?: Variants;
   type?: "button" | "submit" | "reset";
   href?: string;
   disabled?: boolean;
@@ -15,13 +16,15 @@ const {
   class: extraClass = "",
 } = Astro.props;
 
-const variants = {
+const variants: Record<Variants, string> = {
   solid:
     "bg-primary text-white hover:bg-secondary focus:secondary border-transparent",
   outline:
     "border border-gray-200 text-gray-500 hover:border-primary hover:secondary",
   ghost: "text-primary hover:bg-blue-100 hover:text-blue-800",
   soft: "bg-blue-100 text-blue-800 hover:bg-blue-200",
+  secondary:
+    "bg-secondary text-white hover:bg-primary focus:primary border-transparent",
   white:
     "border border-gray-200 bg-white text-gray-800 shadow hover:bg-gray-50",
   link: "text-primary hover:text-blue-800",

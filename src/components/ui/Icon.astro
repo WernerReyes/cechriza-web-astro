@@ -1,0 +1,19 @@
+---
+import type { IconName } from "@/interfaces/icon-name";
+import { Icon as AstroIcon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"svg"> {
+  name: IconName;
+  "is:inline"?: boolean;
+  title?: string;
+  desc?: string;
+  size?: number | string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { name, ...props } = Astro.props as Props;
+---
+
+<AstroIcon name={`lucide:${name}`} {...props} />

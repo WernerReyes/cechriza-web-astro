@@ -1,0 +1,98 @@
+---
+
+interface Props {
+  id: string;
+  name?: string;
+  checked?: boolean;
+  onLabel?: string;
+  offLabel?: string;
+
+  disabled?: boolean;
+}
+
+const {
+  id,
+  checked = false,
+  onLabel = "",
+  offLabel = "",
+
+  name = "toggle",
+  disabled = false,
+} = Astro.props;
+---
+
+<label
+  for={id}
+  class={`relative inline-flex items-center cursor-pointer select-none ${
+    disabled ? "opacity-60 cursor-not-allowed" : ""
+  }`}
+>
+  <input
+    id={id}
+    name={name}
+    type="checkbox"
+    class="sr-only peer"
+    checked={checked}
+    disabled={disabled}
+  />
+
+  <!-- Contenedor del switch -->
+  <div
+    class="slider w-14 h-8 bg-gray-300 peer-checked:bg-green-500 rounded-full transition-colors duration-300 relative"
+  >
+    <!-- Bolita móvil -->
+    <span
+      class="absolute top-1 left-1 w-6 h-6 items-center flex justify-center bg-white rounded-full shadow transition-all duration-300 peer-checked:translate-x-6"
+    >
+    </span>
+  </div>
+
+  <!-- Etiqueta -->
+  <div class="ml-3 flex items-center gap-1 text-sm">
+    {
+      checked ? (
+        <>
+          <span>{onLabel}</span>
+        </>
+      ) : (
+        <>
+          <span>{offLabel}</span>
+        </>
+      )
+    }
+  </div>
+</label>
+
+<!-- Script del lado del cliente -->
+<script
+  define:vars={{
+    id,
+  }}
+>
+  const toggle = document.getElementById(id);
+  const label = document.querySelector(
+    `label[for='${id}'] div.ml-3 span:last-child`
+  );
+
+  if (toggle && label) {
+    toggle.addEventListener("change", () => {
+      label.textContent = toggle.checked ? "Monedas" : "Billetes";
+    });
+  }
+</script>
+
+<!-- Estilos -->
+<style>
+  input[type="checkbox"]:checked + .slider {
+    background-color: var(--color-primary);
+  }
+
+  input[type="checkbox"]:focus + .slider {
+    box-shadow: 0 0 1px var(--color-primary);
+  }
+
+  /* 👇 Ajuste: ahora seleccionamos el span interno */
+  input[type="checkbox"]:checked + .slider span {
+    transform: translateX(26px);
+  }
+</style>

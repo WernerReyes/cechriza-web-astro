@@ -1,0 +1,82 @@
+---
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import Button from "@/components/ui/Button.astro";
+import Link from "@/components/ui/Link.astro";
+import type { Section } from "@/interfaces/section.interface";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout
+  title="Mantenimiento Preventivo y Correctivo"
+  description="Ofrecemos servicios de mantenimiento preventivo y correctivo para garantizar el óptimo funcionamiento de sus equipos. Nuestro equipo de técnicos especializados está capacitado para realizar inspecciones regulares, diagnósticos precisos y reparaciones eficientes, minimizando el tiempo de inactividad y maximizando la vida útil de sus activos."
+  class="bg-primary xl:rounded-r-full lg:w-11/12 text-white"
+>
+  <div class="p-4 grid lg:grid-cols-3 text-white">
+    {
+      section.video && (
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class="mx-auto w-full max-w-[300px] h-[400px] object-cover rounded-lg shadow-lg shadow-amber-50"
+        >
+          <source src={section.video} />
+          Tu navegador no soporta este formato de video.
+        </video>
+      )
+    }
+
+    <div class="flex flex-col gap-4 max-md:mt-10 max-md:items-center">
+      <h2 class="subtitle text-white!">
+        {section.title}
+      </h2>
+      <p>
+        {section.description}
+      </p>
+
+      <ul class="list-disc list-inside space-y-2">
+        {
+          section.additional_info_list &&
+            section.additional_info_list.map((info) => <li>{info.label}</li>)
+        }
+       
+      </ul>
+
+      {
+        section.text_button && (
+          <Button
+            variant="secondary"
+            class="mt-4 w-fit hover:scale-105 transition-transform duration-300 hover:bg-tertiary"
+          >
+            
+            <Link
+              link={section.link}
+              
+              textButton={section.text_button}
+            />
+          </Button>
+        )
+      }
+    </div>
+
+    <div class="flex flex-col mx-auto w-fit max-md:mt-10 max-md:items-center">
+      <img
+        src="https://dev.cechriza.com/img/banner_cechriza.png"
+        alt="Banner Cechriza"
+        class="shadow-lg rounded-lg shadow-amber-50 lg:col-span-1 max-h-[400px] lg:object-contain"
+      />
+      <Button
+        variant="secondary"
+        class="mt-10 w-fit hover:scale-105 transition-transform duration-300 hover:bg-tertiary"
+      >
+        Descargar Brochure
+      </Button>
+    </div>
+  </div>
+</SectionLayout>

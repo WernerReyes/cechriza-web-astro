@@ -1,37 +1,35 @@
 import type { Menu } from "@/interfaces/menu.interface";
 
 export function buildMenuTree(menus: Menu[]): Menu[] {
-  const tree: Menu[] = [];
-  const parentsMap = new Map<number, Menu>();
+  const map = new Map<number, Menu>();
+        const allMenus: Menu[] = [];
 
-  for (const menu of menus) {
-    if (menu.parent) {
-      const parentId = menu.parent.id_menu;
+        // Función recursiva para aplanar jerarquía de padres
+        const flattenWithParents = (menu: Menu) => {
+            let current: Menu | null = menu;
+            while (current) {
+                if (!map.has(current.id_menu)) {
+                    map.set(current.id_menu, { ...current, children: [] });
+                    allMenus.push(map.get(current.id_menu)!);
+                }
+                current = current.parent || null;
+            }
+        };
 
-      // Si aún no existe el padre en el mapa, lo creamos
-      if (!parentsMap.has(parentId)) {
-        parentsMap.set(parentId, {
-          ...menu.parent,
-          children: [],
-        });
-      }
+        // Aplanar todos los menús con sus padres
+        for (const menu of menus) {
+            flattenWithParents(menu);
+        }
 
-      // Agregamos el hijo al array de children del padre
-      parentsMap?.get(parentId)?.children?.push({
-        ...menu,
-        children: [], // Inicializamos el array de children para el hijo
-      });
-    } else {
-      // Si el menú no tiene padre, lo tratamos como raíz directamente
-      tree.push({
-        ...menu,
-        children: [], // Inicializamos el array de children para el menú raíz
-      });
-    }
-  }
+        // Enlazar padres e hijos
+        for (const menu of map.values()) {
+            if (menu.parent_id && map.has(menu.parent_id)) {
+                map.get(menu.parent_id)!.children!.push(menu);
+            }
+        }
 
-  // Agregamos los padres al árbol final
-  tree.push(...parentsMap.values());
 
-  return tree.sort((a, b) => a.order_num - b.order_num);
+       
+        // Retornar solo las raíces
+        return Array.from(map.values()).filter((m) => !m.parent_id);
 }

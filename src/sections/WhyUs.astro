@@ -1,6 +1,7 @@
 ---
 import SectionLayout from "@/layouts/SectionLayout.astro";
 import type { Section } from "@/interfaces/section.interface";
+import IconImage from "@/components/ui/IconImage.astro";
 
 interface Props {
   section: Section;
@@ -10,11 +11,9 @@ const { section } = Astro.props as Props;
 ---
 
 <SectionLayout>
-  <div class="md:flex items-center justify-center gap-10">
+  <div class="flex flex-col items-center justify-center gap-10">
     <!-- Texto principal -->
-    <header
-      class="w-full md:w-1/2 lg:w-2/5 text-center md:text-left mb-12 md:mb-0 animate-fadeInUp"
-    >
+    <header class="w-full text-center mb-12 md:mb-0 animate-fadeInUp">
       <h3 class="subtitle mb-2">
         {section.subtitle}
       </h3>
@@ -29,15 +28,13 @@ const { section } = Astro.props as Props;
     {
       section.section_items && (
         // <!-- Grid de Beneficios -->
-        <div class="w-full md:w-1/2 lg:w-3/5 flex flex-wrap justify-center gap-4 animate-fadeIn">
+        <div class="w-full flex flex-wrap justify-center gap-4 animate-fadeIn">
           {section.section_items.map((item) => (
-            <article class="bg-[#f3f4f6]  basis-full lg:basis-[calc(33.333%-1rem)] mx-auto border rounded-3xl shadow hover:shadow-xl transition-transform hover:-translate-y-1 p-8 text-center">
-              <img
-                src={item.icon}
-                alt={item.title}
-                class="size-12 mb-4 mx-auto object-contain"
-              />
-              <h4 class="text-secondary font-semibold text-xl mb-2">
+            <article class="bg-[#f3f4f6]   basis-full sm:basis-[calc(50%-1rem)] lg:basis-[calc(25%-1rem)]  2xl:basis-[calc(20%-1rem)] mx-auto border-3 rounded-3xl shadow hover:shadow-xl transition-transform hover:-translate-y-1 p-4 text-center">
+              <div class="w-fit mx-auto p-3">
+                <IconImage item={item} />
+              </div>
+              <h4 class="text-secondary font-bold text-xl mb-2">
                 {item.title}
               </h4>
               <p class="description">{item.description}</p>
@@ -48,4 +45,3 @@ const { section } = Astro.props as Props;
     }
   </div>
 </SectionLayout>
-

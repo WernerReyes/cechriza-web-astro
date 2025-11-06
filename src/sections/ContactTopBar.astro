@@ -1,7 +1,6 @@
 ---
-import IconImage from '@/components/ui/IconImage.astro';
-import type { Section } from '@/interfaces/section.interface';
-
+import IconImage from "@/components/ui/IconImage.astro";
+import type { Section } from "@/interfaces/section.interface";
 
 interface Props {
   section: Section;
@@ -9,7 +8,6 @@ interface Props {
 
 const { section } = Astro.props;
 ---
-
 <section class="py-3 bg-primary text-white text-center px-10">
   <div
     class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8 text-sm sm:text-base"
@@ -23,11 +21,6 @@ const { section } = Astro.props;
             )}
 
             <div class="flex items-center gap-2">
-              {/* <img
-                src={item.icon}
-                alt={item.title}
-                class="w-5 h-5 object-contain"
-              /> */}
               <IconImage item={item} />
               <span>{item.title}</span>
             </div>

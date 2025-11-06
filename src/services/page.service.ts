@@ -7,7 +7,12 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
   try {
   const res = await fetch(`${PUBLIC_API}/page/${slug}`, {
     credentials: "include",
+  }).catch((error) => {
+    console.error("Fetch error:", error);
+    throw error;
   });
+
+
   const data = (await res.json()) as ApiResponse<Page>;
 
   // console.log({ data })
