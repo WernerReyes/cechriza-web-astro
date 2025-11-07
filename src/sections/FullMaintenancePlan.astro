@@ -1,0 +1,117 @@
+---
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import IconImage from "@/components/ui/IconImage.astro";
+import Button from "@/components/ui/Button.astro";
+import Link from "@/components/ui/Link.astro";
+import type { Section } from "@/interfaces/section.interface";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+<SectionLayout
+aria-labelledby="full-maintenance-plan-title"
+>
+  <!-- Sección principal -->
+  <section
+    class="space-y-12"
+    aria-labelledby="section-heading"
+  >
+    <!-- Encabezado semántico -->
+    <header
+      class="bg-green-600 text-white rounded-lg p-6 shadow-md"
+      role="banner"
+    >
+      <div class="flex items-center gap-4">
+        <figure class="bg-green-400 rounded-full p-3 shrink-0">
+          <IconImage item={section} aria-hidden="true" />
+        </figure>
+
+        <div>
+          <h2
+            id="section-heading"
+            class="text-2xl font-bold leading-snug"
+          >
+            {section.title}
+          </h2>
+
+          {section.description && (
+            <p class="text-sm mt-2 leading-relaxed">
+              {section.description}
+            </p>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <!-- Imagen ilustrativa -->
+      <figure class="rounded-lg overflow-hidden shadow-md">
+        <img
+          src={section.image}
+          alt={`Imagen ilustrativa de ${section.title}`}
+          class="w-full h-full object-cover"
+        />
+       
+      </figure>
+
+      <!-- Contenido textual -->
+      <div>
+        {section.section_items?.map((item) => (
+          <article
+           
+            class="mb-8 border-b border-gray-200 pb-6"
+            aria-labelledby={`item-title-${item.id_section_item}`}
+          >
+            <!-- Encabezado del artículo -->
+            <header class="flex items-center gap-2 mb-3">
+              <IconImage item={item} aria-hidden="true" />
+              <h3
+                id={`item-title-${item.id_section_item}`}
+                class="text-xl font-semibold text-gray-800"
+              >
+                {item.title}
+              </h3>
+            </header>
+
+            <!-- Descripción -->
+            {item.description && (
+              <p class="text-gray-600 mb-4 leading-relaxed">
+                {item.description}
+              </p>
+            )}
+
+            <!-- Lista informativa -->
+            {item.additional_info_list && (
+              <ul
+                class="list-disc list-inside text-gray-700 space-y-2"
+                aria-label={`Detalles adicionales sobre ${item.title}`}
+              >
+                {item.additional_info_list.map((info) => (
+                  <li >{info.label}</li>
+                ))}
+              </ul>
+            )}
+
+            <!-- Subtítulo complementario -->
+            {item.subtitle && (
+              <p class="text-gray-600 mt-4 italic">{item.subtitle}</p>
+            )}
+          </article>
+        ))}
+
+        <!-- Llamado a la acción -->
+        {(section.link || section.text_button) && (
+          <footer class="mt-8">
+            <Button variant="secondary" aria-label="Ir al enlace relacionado">
+              <Link link={section.link} textButton={section.text_button!} />
+            </Button>
+          </footer>
+        )}
+      </div>
+    </div>
+  </section>
+</SectionLayout>

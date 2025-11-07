@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { SectionType } from "../interfaces/section.interface";
 import { getPageBySlug } from "../services/page.service";
-import Maintenance from "@/sections/maintenance.astro";
+import Maintenance from "@/sections/Maintenance.astro";
 
 const page = await getPageBySlug(Astro.params.slug!);
 
@@ -24,8 +24,16 @@ const getSectionComponent = async (type: string) => {
     [SectionType.CASH_PROCESSING_EQUIPMENT]:
       "../sections/CashProcessingEquipment.astro",
     [SectionType.VALUE_PROPOSITION]: "../sections/ValueProposition.astro",
+    [SectionType.SOLUTIONS_OVERVIEW]: "../sections/SolutionsOverview.astro",
+    [SectionType.MISSION_VISION]: "../sections/MissionVision.astro",
+    [SectionType.FULL_MAINTENANCE_PLAN]: "../sections/FullMaintenancePlan.astro",
     [SectionType.PREVENTIVE_CORRECTIVE_MAINTENANCE]:
       "../sections/PreventiveCorrectiveMaintenance.astro",
+    [SectionType.SUPPORT_MAINTENANCE]: "../sections/SupportMaintenance.astro",
+    [SectionType. OPERATIONAL_BENEFITS]: "../sections/OperationalBenefits.astro",
+    [SectionType.MACHINE]: "../sections/Machines.astro",
+    [SectionType.CTA_BANNER]: "../sections/CTABanner.astro",
+    [SectionType.OUR_COMPANY]: "../sections/OurCompany.astro",
     [SectionType.CLIENT]: "../sections/Clients.astro",
     [SectionType.CONTACT_US]: "../sections/ContactUs.astro",
     [SectionType.FOOTER]: "../sections/Footer.astro",

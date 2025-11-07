@@ -1,4 +1,6 @@
 ---
+  import { ClientRouter } from "astro:transitions";
+  import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
@@ -6,7 +8,6 @@ interface Props {
 
 const { title, description = "Descripción genérica" } = Astro.props;
 
-import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -25,6 +26,8 @@ import "../styles/global.css";
     <meta property="og:image" content="/images/preview.jpg" />
 
     <link rel="icon" href="/favicon.svg" />
+
+ 
   </head>
   <body>
     <main class="fondo_paralelo">
@@ -130,7 +133,6 @@ import "../styles/global.css";
 
   for (const link of links) {
     if (link.getAttribute("href") === activeLink) {
-      console.log("link activo:", link);
       link.classList.add("!text-tertiary");
     }
   }

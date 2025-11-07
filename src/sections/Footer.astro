@@ -1,6 +1,8 @@
 ---
 import type { Section } from "@/interfaces/section.interface";
 import Link from "@/components/ui/Link.astro";
+import LinkDropdown from "./MainNavigationMenu/components/LinkDropdown.astro";
+import { buildMenuTree } from "@/utils/buil-menu-tree";
 
 interface Props {
   section: Section;
@@ -9,47 +11,56 @@ interface Props {
 const { section } = Astro.props as Props;
 ---
 
-<footer class="w-full py-14 bg-primary">
+<footer class="w-full py-14 bg-primary"
+  aria-labelledby="footer-title"
+>
   <div class="mx-auto container px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto">
-      {
-        section.image && (
-          <div class="w-full h-12 mx-auto">
-            <img
-              src={section.image}
-              alt="Logo"
-              class="w-full h-full object-contain"
-            />
-          </div>
-        )
-      }
+    {
+      section.image && (
+        <div class="w-full h-12 mx-auto">
+          <img
+            src={section.image}
+            alt="Logo"
+            class="w-full h-full object-contain"
+          />
+        </div>
+      )
+    }
 
-      <ul
-        class="text-lg flex items-center justify-center flex-col gap-7 md:flex-row md:gap-12 transition-all duration-500 py-16 mb-10 border-b border-gray-700"
-      >
-        {
-          section?.menus &&
-            section.menus.map((menu) => (
-             <li class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300">
-                <Link link={menu.link!} class="text-white block font-medium" />
-              </li>
-            ))
-        }
-      </ul>
-      <div class="flex space-x-10 justify-center items-center mb-14">
-        {
-          section?.section_items &&
-            section.section_items.map((item) => (
-              // Contact Info
-              <div class="text-center">
-                <h4 class="text-gray-300 font-semibold mb-2">{item.title}</h4>
-              </div>
-            ))
-        }
-      </div>
-      <span class="text-lg text-gray-500 text-center block"
-        >Copyright © 2025 - Cechriza. {section?.subtitle}</span
-      >
+    <ul
+      class=" flex items-center justify-center flex-col gap-7 md:flex-row md:gap-12 transition-all duration-500 py-16 mb-10 border-b border-gray-700"
+    >
+      {
+        section?.menus &&
+          buildMenuTree(section.menus).map((menu) => (
+            <>
+              {!menu.children?.length ? (
+                <li class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300">
+                  <Link
+                    link={menu.link}
+                    class="text-white block font-medium"
+                  />
+                </li>
+              ) : (
+                <LinkDropdown menu={menu} />
+              )}
+            </>
+          ))
+      }
+    </ul>
+    <div class="flex space-x-10 justify-center items-center mb-14">
+      {
+        section?.additional_info_list &&
+          section.additional_info_list.map((item) => (
+            // Contact Info
+            <div class="text-center">
+              <h4 class="text-gray-300 font-semibold mb-2">{item.label}</h4>
+            </div>
+          ))
+      }
     </div>
+    <span class="text-lg text-gray-500 text-center block"
+      >Copyright © 2025 - Cechriza. {section?.subtitle}</span
+    >
   </div>
 </footer>

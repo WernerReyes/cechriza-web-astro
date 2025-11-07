@@ -1,0 +1,230 @@
+---
+import type { Section } from "@/interfaces/section.interface";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout
+  aria-labelledby="mission-vision-title"
+>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <!-- Columna izquierda: texto -->
+    <article class="relative space-y-8 animate-fadeInUp">
+      <header class="space-y-4">
+        <h2 class="title text-secondary! leading-snug">
+          {section.title}
+        </h2>
+        <p class="description text-gray-700! leading-relaxed">
+          {section.description}
+        </p>
+      </header>
+
+      {
+        section.section_items?.map((item) => (
+          <section
+            class="space-y-6"
+            aria-labelledby={`vision-mision-${item.id_section_item}`}
+          >
+            <header id={`vision-mision-${item.id_section_item}`}>
+              <h3 class="text-xl font-bold text-secondary">
+                <span class="text-2xl text-secondary font-black">&gt;</span>
+                {item.title}
+              </h3>
+            </header>
+            <p class="text-gray-700 leading-relaxed">{item.description}</p>
+          </section>
+        ))
+      }
+
+      <!-- Decoración de fondo -->
+      <!-- <div
+        class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_30%,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[length:24px_24px] opacity-30"
+      >
+      </div> -->
+    </article>
+
+    <!-- Columna derecha: mapa -->
+    <figure
+      class="lg:flex justify-center relative animate-fadeInUp"
+      id="image-container"
+    >
+      <div class="relative group">
+        <img
+          src={section.image}
+          alt={section.title}
+          class="w-full object-contain rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-700 ease-out"
+        />
+      </div>
+      <!-- class="lg:absolute bg-white bg-opacity-90 backdrop-blur-md p-4 rounded-lg shadow-lg max-w-xs text-center hidden transition-opacity duration-300" -->
+      <figcaption id="info-box" class="hidden"></figcaption>
+    </figure>
+  </div>
+</SectionLayout>
+
+<script
+  define:vars={{
+    imagePath: section.image,
+  }}
+>
+  document.addEventListener("DOMContentLoaded", async function () {
+    if (imagePath.endsWith(".svg") === false) {
+      return;
+    }
+
+    const svgDoc = await getSVGContent();
+
+    const infoBox = document.getElementById("info-box");
+
+    if (!svgDoc) {
+      infoBox.innerHTML = `<h3>Error de Carga</h3><p>No se pudo acceder al SVG. Por favor, abre este archivo usando un servidor local.</p>`;
+      infoBox.classList.add("visible");
+      return;
+    }
+
+    const departaments = svgDoc.querySelectorAll("#features path");
+    const featuresGroup = svgDoc.getElementById("features");
+
+    departaments.forEach((depto) => {
+      depto.addEventListener("mouseover", (event) => {
+        const targetPath = event.currentTarget;
+        const name = targetPath.dataset.nombre;
+
+        if (name) {
+          const clients = targetPath.dataset.clientes || "No disponible";
+          const machines = targetPath.dataset.equipos || "No disponible";
+
+          infoBox.innerHTML = `
+                                <span>${name}</span>
+                                <p><strong>Equipos Vendidos:</strong> ${machines}</p>
+                                <p><strong>Número de Clientes:</strong> ${clients}</p>
+                            `;
+
+          infoBox.classList.remove("hidden");
+        }
+      });
+    });
+
+    if (featuresGroup) {
+      featuresGroup.addEventListener("mouseout", () => {
+        infoBox.classList.add("hidden");
+        setTimeout(() => {
+          if (infoBox.classList.contains("hidden")) {
+            // infoBox.innerHTML = "";
+          }
+        }, 300);
+      });
+    }
+  });
+
+  function getSVGContent() {
+    return fetch(imagePath, {
+      headers: {
+        "Content-Type": "image/svg+xml",
+      },
+    })
+      .then(async (res) => {
+        return await res.text();
+      })
+      .then((svg) => {
+        const container = document.querySelector("#image-container div");
+        container.innerHTML = svg;
+
+        // Obtener el SVG insertado
+        const svgElement = container.querySelector("svg");
+
+        svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+        svgElement.style.width = "100%";
+        svgElement.style.height = "auto";
+        svgElement.style.display = "block";
+        return svgElement;
+      })
+      .catch((err) => console.error("Error cargando SVG:", err));
+  }
+</script>
+
+<style>
+  #info-box {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 280px;
+
+    padding: 15px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: #2c3e50;
+    border-radius: 8px;
+    border: 1px solid #e1e8ed;
+    border-left: 5px solid #3498db;
+    /* Borde de acento azul */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    /* margin-left: -360px; */
+    /* margin-bottom: 240px; */
+    position: absolute;
+    right: 0;
+    top: 27%;
+    /* Animación de entrada */
+
+    /* visibility: hidden; */
+    transform: translateY(15px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  /* Estilos para el contenido de la caja */
+  #info-box h2,
+  #info-box h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #3498db;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  #info-box p {
+    margin: 0 0 12px 0;
+    color: #34495e;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  #info-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  #info-box p strong {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  #info-box h2 + p {
+    color: #7f8c8d;
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* Estilos responsivos para móviles */
+  @media (max-width: 768px) {
+    #info-box {
+      flex-basis: auto;
+      width: 100%;
+      background-color:;
+      max-width: 500px;
+      order: 2;
+
+      /* Coloca la info box arriba en móviles */
+    }
+
+    /* Anular posicionamiento absoluto en móviles */
+    #info-box {
+      position: static !important;
+      transform: none !important;
+    }
+  }
+</style>

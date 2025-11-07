@@ -12,11 +12,10 @@ const { section } = Astro.props as Props;
 ---
 
 <SectionLayout
-  title="Mantenimiento Preventivo y Correctivo"
-  description="Ofrecemos servicios de mantenimiento preventivo y correctivo para garantizar el óptimo funcionamiento de sus equipos. Nuestro equipo de técnicos especializados está capacitado para realizar inspecciones regulares, diagnósticos precisos y reparaciones eficientes, minimizando el tiempo de inactividad y maximizando la vida útil de sus activos."
-  class="bg-primary xl:rounded-r-full lg:w-11/12 text-white"
+  aria-labelledby="preventive-corrective-maintenance-title"
+  class="bg-primary xl:rounded-r-full xl:w-11/12 text-white"
 >
-  <div class="p-4 grid lg:grid-cols-3 text-white">
+  <div class="p-4 grid lg:grid-cols-3 gap-4 text-white">
     {
       section.video && (
         <video
@@ -32,15 +31,15 @@ const { section } = Astro.props as Props;
       )
     }
 
-    <div class="flex flex-col gap-4 max-md:mt-10 max-md:items-center">
+    <div class="flex flex-col gap-4  mx-auto max-lg:text-center  max-lg:items-center max-lg:mt-10">
       <h2 class="subtitle text-white!">
         {section.title}
       </h2>
-      <p>
+      <p class="max-md:text-sm">
         {section.description}
       </p>
 
-      <ul class="list-disc list-inside space-y-2">
+      <ul class="list-disc list-inside space-y-2 max:md:text-sm">
         {
           section.additional_info_list &&
             section.additional_info_list.map((info) => <li>{info.label}</li>)
@@ -75,7 +74,10 @@ const { section } = Astro.props as Props;
         variant="secondary"
         class="mt-10 w-fit hover:scale-105 transition-transform duration-300 hover:bg-tertiary"
       >
-        Descargar Brochure
+        <Link
+          link={section.extra_link}
+          textButton={section.extra_text_button}
+        />
       </Button>
     </div>
   </div>

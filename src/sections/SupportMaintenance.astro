@@ -1,0 +1,74 @@
+---
+import IconImage from "@/components/ui/IconImage.astro";
+import type { Section } from "@/interfaces/section.interface";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout aria-labelledby="support-maintenance-title">
+  <div class="mx-auto text-center">
+    <header class="mb-10">
+      <h2
+        id="section-title"
+        class="title mb-4 text-secondary font-extrabold tracking-tight"
+      >
+        {section.title}
+      </h2>
+
+      {
+        section.description && (
+          <p class="description mb-8 max-w-2xl mx-auto text-gray-700 leading-relaxed">
+            {section.description}
+          </p>
+        )
+      }
+
+      {
+        section.subtitle && (
+          <div
+            class="bg-secondary text-white font-semibold py-4 px-6 rounded-lg text-lg md:text-xl shadow-md inline-block"
+            role="note"
+          >
+            {section.subtitle}
+          </div>
+        )
+      }
+    </header>
+
+    <!-- Tarjetas -->
+    <div class="flex flex-wrap gap-4 justify-center">
+      {
+        section.section_items?.map((item) => (
+          <article
+            class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition basis-full sm:basis-[calc(50%-1rem)] lg:basis-[calc(33.333%-1rem)]"
+            aria-labelledby={`card-title-${item.id_section_item}`}
+            role="listitem"
+          >
+            <header class="mb-4">
+              <div class="flex justify-center mb-3">
+                <IconImage item={item} />
+              </div>
+              <h3
+                id={`card-title-${item.id_section_item}`}
+                class="text-lg font-semibold text-gray-800"
+              >
+                {item.title}
+              </h3>
+            </header>
+
+            {item.description && (
+              <p class="text-gray-600 text-sm leading-relaxed">
+                {item.description}
+              </p>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</SectionLayout>

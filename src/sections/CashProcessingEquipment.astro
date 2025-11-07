@@ -16,7 +16,9 @@ const { section } = Astro.props as Props;
 const switchId = "toggleCoinBill";
 ---
 
-<SectionLayout class="bg-tg-bg">
+<SectionLayout class="bg-tg-bg"
+    aria-labelledby="cash-processing-equipment-title"
+>
   <header class="text-center mb-5 animate-fadeInUp">
     <h2 class="subtitle text-primary! text-lg!">{section.title}</h2>
   </header>

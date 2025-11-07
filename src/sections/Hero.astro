@@ -8,7 +8,9 @@ interface Props {
 const { section } = Astro.props as Props;
 ---
 
-<section aria-roledescription="carousel" aria-live="polite">
+<section aria-roledescription="carousel" aria-live="polite"
+ aria-labelledby="hero-title"
+>
   <div
     id="carousel"
     class="flex overflow-x-hidden snap-x snap-mandatory relative"

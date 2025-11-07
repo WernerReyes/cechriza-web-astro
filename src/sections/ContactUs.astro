@@ -13,7 +13,9 @@ interface Props {
 const { section } = Astro.props as Props;
 ---
 
-<SectionLayout>
+<SectionLayout
+    aria-labelledby="contact-us-title"
+>
   <div class="flex mx-auto gap-x-10">
     <!-- Imagen -->
     {
@@ -25,7 +27,7 @@ const { section } = Astro.props as Props;
     }
 
     <div
-      class="py-12 basis-full mx-auto lg:basis-1/2 lg:flex lg:justify-center items-center animate-fadeInUp"
+      class="basis-full mx-auto lg:basis-1/2 lg:flex lg:justify-center items-center animate-fadeInUp"
     >
       <div class="flex-1 mx-auto px-4 text-gray-600">
         <header class="text-center">

@@ -3,11 +3,12 @@ import {
   IconType,
   type SectionItem,
 } from "@/interfaces/section-item.interface";
+import type { Section } from "@/interfaces/section.interface";
 
 import { Icon } from "astro-icon/components";
 
 interface Props {
-  item: SectionItem;
+  item: SectionItem | Section;
 }
 const { item } = Astro.props as Props;
 

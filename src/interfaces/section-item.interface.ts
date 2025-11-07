@@ -1,5 +1,6 @@
 import type { IconName } from "./icon-name";
 import type { Link } from "./link.interface";
+import type { AdditionalInfo } from "./section.interface";
 
 export enum InputType {
     TEXT = 'TEXT',
@@ -31,9 +32,9 @@ export interface SectionItem {
     link_id: number | null;
     order_num: number;
     section_id: number;
-    category_id: number | null;
     input_type: InputType | null;
     link: Link | null;
     icon: Icon | null;
     icon_type: IconType | null;
+    additional_info_list: AdditionalInfo[] | null;
 }

@@ -1,0 +1,362 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import Link from "@/components/ui/Link.astro";
+import Input from "@/components/ui/Input.astro";
+import type { Section } from "@/interfaces/section.interface";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import { getMainImage } from "@/utils/get-main-image";
+import { getUniqueCategories } from "@/utils/unique-values";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+
+const uniqueCategories = getUniqueCategories(section);
+---
+
+
+
+<SectionLayout>
+  <!-- Encabezado -->
+  <header class="mb-6">
+    <h2 class="text-xl font-bold text-secondary">
+      {section.title}
+    </h2>
+  </header>
+
+  <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- Navegación lateral -->
+    <aside class="md:col-span-1" aria-label="Categorías de equipos">
+      <nav id="category-nav" class="space-y-2">
+        {
+          uniqueCategories.map((category) => (
+            <button
+              type="button"
+              class="w-full text-left px-4 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-sm transition-colors duration-200"
+              data-id={category.id_category}
+              aria-label={`Ver categoría: ${category.title}`}
+            >
+              <Icon name="square-arrow-right" class="inline-block mr-2" />
+              <span>{category.title}</span>
+            </button>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="md:col-span-3">
+      <!-- Barra de búsqueda -->
+      <form class="flex justify-center md:justify-end mb-6" role="search" aria-label="Buscar máquinas">
+        <label for="search-machine" class="sr-only">Buscar equipo o modelo</label>
+        <Input
+          id="search-machine"
+          type="search"
+          placeholder="Buscar equipo o modelo"
+          class="w-64!"
+        />
+      </form>
+
+      <!-- Lista de máquinas -->
+      <section
+        id="machine-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 mc:grid-cols-3 lg:grid-cols-4 gap-6"
+        aria-label="Listado de máquinas"
+      >
+        {
+          section.machines?.map((machine) => (
+            <article
+              class="machine"
+              data-id={machine.id_machine}
+              data-category={machine.category?.id_category}
+            >
+              {/* <a
+                href={`detalle_equipo?id=${machine.id_machine}&type=${machine.category?.type}`}
+                aria-label={`Ver detalles de ${machine.name}`}
+              > */}
+              <Link
+               link={machine.link}
+                aria-label={`Ver detalles de ${machine.name}`}
+                transition:name={machine.link?.page?.title}
+
+              >
+                <div class="wrapper">
+                  <figure class="container">
+                    <div class="top">
+                      <img
+                        src={getMainImage(machine)}
+                        alt={machine.name}
+                        class="object-contain w-full h-48"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption class="title text-center font-semibold mt-2">
+                      {machine.name}
+                    </figcaption>
+                  </figure>
+
+                  <!-- Información adicional -->
+                  <div class="inside">
+                    <div class="icon">
+                      <Icon name="info" />
+                    </div>
+                    <div class="contents">
+                      <p>{machine.description}</p>
+                    </div>
+                  </div>
+                </div>
+              {/* </a> */}
+                </Link>
+            </article>
+          ))
+        }
+      </section>
+
+      <!-- Estado vacío -->
+      <section id="no-results" class="hidden empty-message animate-fadeIn" aria-live="polite">
+        <div
+          class="p-8 bg-gray-50 border border-dashed border-gray-300 rounded-2xl text-center shadow-inner"
+        >
+          <div class="text-6xl mb-3 text-gray-300">
+            <img
+              src="/machine.webp"
+              alt="Ícono de máquinas no disponibles"
+              class="w-16 h-16 mx-auto"
+            />
+          </div>
+          <p class="text-gray-600 text-lg font-medium mb-1">
+            No hay máquinas disponibles
+          </p>
+          <p class="text-gray-400 text-sm">
+            Prueba cambiando la categoría para ver más opciones.
+          </p>
+        </div>
+      </section>
+    </main>
+  </section>
+</SectionLayout>
+
+
+<script
+ 
+>
+
+
+  // const inpu
+  document.addEventListener("DOMContentLoaded", () => {
+  const machineGrid = document.getElementById("machine-grid");
+  const machineElements = Array.from(machineGrid?.querySelectorAll(".machine") as NodeList) as HTMLElement[];
+  const noResultsMessage = document.querySelector("#no-results");
+  const input = document.getElementById("search-machine");
+  const categoryNav = document.getElementById("category-nav") as HTMLElement;
+
+  let activeCategory: any = null; // categoría seleccionada
+  let searchTerm = ""; // texto del buscador
+
+  // 🔍 Función para aplicar ambos filtros
+  function applyFilters() {
+    let visibleCount = 0;
+
+    machineElements.forEach((machineElement) => {
+      const title = machineElement
+        .querySelector(".title")?.textContent.toLowerCase() as string;
+      const category = machineElement.getAttribute("data-category");
+      const matchesText = title.includes(searchTerm);
+      const matchesCategory =
+        !activeCategory || activeCategory === "all" || category === activeCategory;
+
+      if (matchesText && matchesCategory) {
+        machineElement.classList.remove("!hidden");
+        visibleCount++;
+      } else {
+        machineElement.classList.add("!hidden");
+      }
+    });
+
+    // Mostrar o ocultar mensaje de "sin resultados"
+    if (visibleCount === 0) {
+      noResultsMessage?.classList.remove("hidden");
+    } else {
+      noResultsMessage?.classList.add("hidden");
+    }
+  }
+
+  // 🧠 Escuchar cambios en el buscador
+  input?.addEventListener("input", function () {
+    searchTerm = this.value.toLowerCase();
+    applyFilters();
+  });
+
+  // 🏷️ Escuchar clicks en las categorías
+  Array.from(categoryNav.querySelectorAll("button")).forEach((button) => {
+    button.addEventListener("click", function () {
+      const categoryId = this.getAttribute("data-id");
+
+      // Marcar botón activo visualmente (opcional)
+      Array.from(categoryNav.querySelectorAll("button")).forEach((btn) =>
+        btn.classList.remove("active-category")
+      );
+      this.classList.add("active-category");
+
+      activeCategory = categoryId;
+      applyFilters();
+    });
+  });
+
+  // 👀 Inicializa el filtro al cargar
+  applyFilters();
+});
+
+</script>
+
+<style>
+    #category-nav .active-category {
+        /* @reference border-l-4 border-tertiary !bg-secondary !text-white; */
+        border-left-width: 4px;
+        border-left-color: var(--color-tertiary) !important;
+        background-color: var(--color-secondary) !important;
+        color: white;
+    }
+
+
+
+  .machine {
+    /* display: flex; Permite que el wrapper interior se estire */
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  /* --- Tarjeta Individual (.wrapper) --- */
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative; /* Necesario para el overlay .inside */
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  /* --- Contenedor Interno (imagen + título) --- */
+  .wrapper .container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Ocupa el espacio vertical disponible */
+  }
+
+  /* --- Sección Superior (Imagen) --- */
+
+  .wrapper .top {
+    height: 200px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+
+    /* --- LÍNEAS AÑADIDAS --- */
+    padding: 15px; /* Define el grosor del "marco" interior */
+    box-sizing: border-box; /* Asegura que el padding no aumente la altura total de 200px */
+  }
+
+  .wrapper .top img {
+    width: 100%;
+    height: 100%;
+    /* Cambia 'cover' por 'contain' */
+    object-fit: contain;
+  }
+
+  .wrapper:hover .top img {
+    transform: scale(1.1); /* Efecto de zoom en la imagen */
+  }
+
+  /* --- Título del Producto --- */
+  .wrapper .title {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    color: #333;
+    flex-grow: 1; /* Se estira para llenar el espacio sobrante */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centra verticalmente el texto del título */
+  }
+
+  /* --- Sección "Inside" (Overlay al Hover) --- */
+  .wrapper .inside {
+    z-index: 10;
+    background: linear-gradient(
+      135deg,
+      var(--color-secondary) 0%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    top: -70px;
+    right: -70px;
+    border-radius: 0 0 0 200px;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .wrapper .inside .icon {
+    position: absolute;
+    right: 80px;
+    top: 80px;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .wrapper:hover .inside {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    border-radius: 0;
+    opacity: 0.95;
+  }
+
+  .wrapper:hover .inside .icon {
+    opacity: 0;
+  }
+
+  .wrapper .inside .contents {
+    padding: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition:
+      opacity 0.4s ease 0.1s,
+      transform 0.6s ease 0.1s;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .wrapper:hover .inside .contents {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+</style>

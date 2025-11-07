@@ -1,0 +1,55 @@
+---
+import type { Section } from "@/interfaces/section.interface";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout
+  class="relative bg-primary text-white py-20 px-6 lg:px-24 overflow-hidden"
+    aria-labelledby="cta-title"
+>
+  <div
+    class="absolute inset-0"
+    style=`background-image: url(${section.image}); background-size: cover; background-position: center;`
+  >
+  </div>
+  <div class="absolute inset-0 bg-primary/40"></div>
+
+  <!-- Contenido -->
+  <div class="relative max-w-4xl mx-auto text-center space-y-8">
+    <header>
+      <h2 id="cta-title" class="title text-white! leading-snug">
+        {section.title}
+      </h2>
+      <p class="subtitle text-gray-200! mt-3">
+        {section.subtitle}
+      </p>
+    </header>
+
+    <p class="description text-white! leading-relaxed max-w-2xl mx-auto">
+      {section.description}
+    </p>
+
+    {
+      section.text_button && (
+        <footer>
+          <Button variant="secondary" class="rounded-3xl!">
+            <Link
+              link={section.link}
+              textButton={section.text_button}
+              class="text-white!"
+            />
+          </Button>
+        </footer>
+      )
+    }
+  </div>
+  <!-- </section> -->
+</SectionLayout>

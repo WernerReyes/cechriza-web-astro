@@ -1,50 +1,13 @@
 ---
-interface Props {
-  title?: string | null;
-  subtitle?: string | null;
-  description?: string | null;
-  class?: string | null;
-}
-const {
-  title,
-  subtitle,
-  description,
-  class: extraClass,
-} = Astro.props as Props;
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"section"> {}
+
+const { class: extraClass = "", ...props } = Astro.props as Props;
 ---
 
-<section class={`py-20  ${extraClass}`}>
-  <div class="container mx-auto px-4">
-    <!-- <div class="flex flex-wrap -mx-4">
-      <div class="w-full px-4">
-        <div class="mx-auto mb-[60px] max-w-2xl text-center">
-          {
-            subtitle && (
-              <span class="block mb-2 text-lg text-red-500 font-semibold">
-                {subtitle}
-              </span>
-            )
-          }
-
-          {
-            title && (
-              <h2 class="mb-3 text-3xl leading-[1.2] text-secondary font-bold sm:text-4xl md:text-[40px]">
-                {title}
-              </h2>
-            )
-          }
-
-          {
-            description && (
-              <p class="text-base text-body-color dark:text-dark-6">
-                {description}
-              </p>
-            )
-          }
-        </div>
-      </div>
-    </div> -->
-
+<section class={`py-20  ${extraClass}`} {...props}>
+  <div class="container mx-auto px-5 xl:px-15">
     <slot />
   </div>
 </section>

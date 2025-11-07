@@ -11,9 +11,7 @@ const { section } = Astro.props as Props;
 ---
 
 <SectionLayout
-  title={section.title}
-  subtitle={section.subtitle}
-  description={section.description}
+  aria-labelledby="value-proposition-title"
 >
 <header class="text-center mb-6 animate-fadeInUp">
     <h3 class="title text-center">
