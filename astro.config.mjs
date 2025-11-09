@@ -1,22 +1,23 @@
-// @ts-check
 import { defineConfig, envField } from 'astro/config';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import tailwindcss from "@tailwindcss/vite";
-// import node from '@astrojs/node';
 import icon from "astro-icon";
+import sitemap from '@astrojs/sitemap';
+
 
 // https://astro.build/config
 export default defineConfig({
   output: 'server', // 👈 genera SSR
   // adapter: node({ mode: 'standalone' }),
+  site: process.env.URL_SITE,
   adapter: vercel({}),
   redirects: {
     '/': '/home',
   },
-   integrations: [icon()],
+  integrations: [icon(), sitemap()],
 
   vite: {
-    
+
     plugins: [tailwindcss()],
   },
   env: {
@@ -24,7 +25,11 @@ export default defineConfig({
       PUBLIC_API: envField.string({
         context: 'server',
         access: 'public'
-      })
+      }),
+      URL_SITE: envField.string({
+        context: 'server',
+        access: 'public'
+      }),
     }
   },
 });

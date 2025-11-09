@@ -1,40 +1,144 @@
 ---
-  import { ClientRouter } from "astro:transitions";
-  import "../styles/global.css";
-interface Props {
+  import Alert from "@/components/ui/Alert.astro";
+import "../styles/global.css";
+
+type Props = {
   title: string;
   description?: string;
-}
+  image?: string;
+  url?: string;
+  keywords?: string;
+  author?: string;
+};
 
-const { title, description = "Descripción genérica" } = Astro.props;
+const {
+  title,
+  description = "Descripción genérica del sitio",
+  image = "/cechriza-logo.jpg",
+  url = Astro.url,
+  keywords = "Cechriza, Cechriza S.A.C, soluciones de efectivo, equipos de procesamiento de efectivo, mantenimiento de equipos de efectivo",
+  author = "Cechriza S.A.C",
+} = Astro.props as Props;
 
+const siteName = "Cechriza S.A.C";
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Título y descripción -->
+    <title>{title} | {siteName}</title>
     <meta name="description" content={description} />
 
-    <!-- SEO básico -->
+    <!-- Palabras clave -->
+    <meta name="keywords" content={keywords} />
+
+    <!-- Autor -->
+    <meta name="author" content={author} />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:url" content={url} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:image" content="/images/preview.jpg" />
+    <meta property="og:site_name" content={siteName} />
 
-    <link rel="icon" href="/favicon.svg" />
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
 
- 
+    <!-- Favicon y color -->
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="theme-color" content="oklch(.21 .034 264.665)">
+
+    <!-- Canonical -->
+    <link rel="canonical" href={url} />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Estructura JSON-LD (para datos enriquecidos) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  description,
+  url,
+  image,
+})}></script>
+
+
+
+
   </head>
+
+
+  <!-- <script
+      define:vars={{
+        phoneNumber: PHONE_NUMBER,
+        urlSite: URL_SITE,
+      }}
+    type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": ["TaxiService", "Organization"],
+            "@id": `${urlSite}/#organization`,
+            "name": "Taxi Satelital 355",
+            "url": `${urlSite}`,
+            "description": "Empresa de servicio de transporte de pasajeros con la flota más grande, moderna y confiable de Lima",
+            "telephone": {phoneNumber},
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Lima",
+              "addressCountry": "PE"
+            },
+            "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su 00:00-23:59",
+            "priceRange": "$$",
+            "serviceArea": {
+              "@type": "GeoCircle",
+              "geoMidpoint": {
+                "@type": "GeoCoordinates",
+                "latitude": -12.021093,
+                "longitude": -77.118858
+              },
+              "geoRadius": "50000"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": `${urlSite}/#website`,
+            "url": `${urlSite}`,
+            "name": "Taxi Green Lima",
+            "publisher": {
+              "@id": `${urlSite}/#organization`
+            },
+            "inLanguage": "es",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": `${urlSite}/?s={search_term_string}`,
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
+      }
+    </script> -->
+
   <body>
     <main class="fondo_paralelo">
+      <Alert />
       <slot />
     </main>
   </body>
 </html>
+
 
 <style>
   .fondo_paralelo {

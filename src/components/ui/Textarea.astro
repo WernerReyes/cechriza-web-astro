@@ -1,17 +1,42 @@
 ---
-interface Props {
-  label: string;
-  placeholder?: string;
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<"textarea"> {
+  label?: string;
+  
 }
 
-const { label, placeholder = "" } = Astro.props as Props;
+const { label,  class: className, ...rest } = Astro.props as Props;
 ---
 
-<div>
-  <label for={label} class="font-medium"> {label} </label>
-  <textarea
-    id={label}
-    required
-    class="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg"
-    placeholder={placeholder}></textarea>
-</div>
+{
+  label && (
+    <div>
+      <label for={label} class="font-medium">
+        {" "}
+        {label}{" "}
+      </label>
+      <textarea
+        id={label}
+        required
+        class:list={[
+          "w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg",
+          className,
+        ]}
+        {...rest}
+      />
+    </div>
+  )
+}
+
+{
+  !label && (
+    <textarea
+      class:list={[
+        "w-full h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-gray-800 shadow-sm rounded-lg",
+        className,
+      ]}
+      {...rest}
+    />
+  )
+}

@@ -65,7 +65,10 @@ const { section } = Astro.props;
               <>
                 {!menu.children?.length && (
                   <li class="max-lg:border-b max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300">
-                    <Link link={menu.link!} class="text-white block font-medium" />
+                    <Link
+                      link={menu.link!}
+                      class="text-white block font-medium"
+                    />
                   </li>
                 )}
 
@@ -78,7 +81,9 @@ const { section } = Astro.props;
       </ul>
     </div>
 
-    <button id="toggleOpen" class="lg:hidden cursor-pointer ml-auto text-white">
+    <button
+     aria-label="Abrir menú de navegación"
+    id="toggleOpen" class="lg:hidden cursor-pointer ml-auto text-white">
       <!-- <Menu class="size-7" /> -->
       <Icon name="menu" size="28" />
     </button>
@@ -111,7 +116,15 @@ const { section } = Astro.props;
     }
   });
 
+  document.addEventListener("DOMContentLoaded", function () {
+    fixedNavOnScroll();
+  });
+
   window.addEventListener("scroll", function () {
+    fixedNavOnScroll();
+  });
+
+  function fixedNavOnScroll() {
     const nav = document.querySelector("nav");
 
     if (window.scrollY > 0) {
@@ -119,5 +132,5 @@ const { section } = Astro.props;
     } else {
       nav?.classList.remove("shadow-md", "fixed", "top-0", "border-gray-800");
     }
-  });
+  }
 </script>

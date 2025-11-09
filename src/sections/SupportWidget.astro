@@ -1,0 +1,93 @@
+---
+import IconImage from "@/components/ui/IconImage.astro";
+import Textarea from "@/components/ui/Textarea.astro";
+import type { Section } from "@/interfaces/section.interface";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<!-- Control de visibilidad del chat -->
+<input type="checkbox" id="chat-toggle" class="hidden peer" />
+
+<!-- Botón flotante de WhatsApp -->
+<label
+  for="chat-toggle"
+  class="fixed flex items-center justify-center p-3 rounded-full right-5 bottom-5 bg-green-500 hover:bg-green-600 shadow-lg z-50 cursor-pointer animate-[bounce_5s_infinite] peer-checked:hidden"
+  aria-label="Abrir soporte al cliente por chat"
+>
+  <IconImage item={section} class="size-16" />
+</label>
+
+<!-- Ventana del chat -->
+<aside
+  class="hidden peer-checked:flex flex-col bg-gray-100 fixed z-50 bottom-5 right-5 p-6 w-64 mx-auto rounded-lg shadow-md animate-fadeInUp"
+  role="dialog"
+  aria-labelledby="chat-title"
+  aria-modal="true"
+>
+  <!-- Encabezado -->
+  <header class="relative flex justify-center items-center gap-2 mb-4">
+    <!-- Botón para cerrar -->
+    <label
+      for="chat-toggle"
+      class="absolute size-14 flex items-center justify-center rounded-full bg-green-500 hover:bg-green-600 cursor-pointer -left-8 -top-8 shadow-md"
+      aria-label="Cerrar chat de soporte"
+    >
+      <IconImage item={section} class="size-12 text-white" />
+    </label>
+  </header>
+
+  <!-- Imagen y mensaje de bienvenida -->
+  <figure class="flex flex-col items-center text-center mb-4">
+    <img
+      src={section.image}
+      alt="Mascota representativa del soporte al cliente"
+      class="size-24 mb-2"
+    />
+    <figcaption class="sr-only">¡Estamos aquí para ayudarte!</figcaption>
+  </figure>
+
+  <!-- Formulario de contacto -->
+  <form
+  data-phone={section?.subtitle}
+    class="space-y-3"
+    id="support-chat-form"
+    aria-label="Formulario de contacto con soporte"
+  >
+    <Textarea rows={3} class="h-16!" placeholder="Escribe tu mensaje..." />
+
+    <button
+      type="submit"
+      class="w-full cursor-pointer bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+    >
+      Enviar
+    </button>
+  </form>
+</aside>
+
+<script
+ 
+>
+import { showAlert } from "@/utils/alert";
+
+  const supportForm = document.getElementById("support-chat-form") as HTMLFormElement;
+  supportForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const message = (this.querySelector("textarea") as HTMLTextAreaElement).value;
+    if (message.trim() === "") {
+        showAlert("Por favor, escribe un mensaje antes de enviar.", "warning");
+
+      return;
+    }
+    const phoneNumber = this.getAttribute("data-phone") as string;
+
+    const whatsappURL = `https://wa.me/+51${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappURL, "_blank");
+
+    this.reset();
+  });
+</script>

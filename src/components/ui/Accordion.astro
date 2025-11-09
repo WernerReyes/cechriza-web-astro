@@ -7,22 +7,25 @@ interface Props {
   title: string;
   link?: Link | null;
   deep?: number;
+  class?: string;
 }
-const { title, deep = 1, link } = Astro.props as Props;
+const { title, deep = 1, link, class: className } = Astro.props as Props;
 ---
 
 <details
   class:list={[
     deep === 1 ? "group/accordion" : "group/nested",
-    "border-b border-gray-800",
+    
   ]}
 >
+  <!-- class="flex cursor-pointer items-center justify-between px-4 py-3 text-base font-medium text-white list-none" -->
   <summary
-    class="flex cursor-pointer items-center justify-between px-4 py-3 text-base font-medium text-white list-none"
+    class:list={[
+      "flex cursor-pointer items-center justify-between px-4 py-3 text-base font-medium text-white list-none",
+      className,
+    ]}
   >
-    <LinkComponent link={link}>
-      {title}
-    </LinkComponent>
+    {link ? <LinkComponent link={link} /> : title}
 
     <Icon
       name="chevron-down"

@@ -16,8 +16,9 @@ const { section } = Astro.props as Props;
 const switchId = "toggleCoinBill";
 ---
 
-<SectionLayout class="bg-tg-bg"
-    aria-labelledby="cash-processing-equipment-title"
+<SectionLayout
+  class="bg-tg-bg"
+  aria-labelledby="cash-processing-equipment-title"
 >
   <header class="text-center mb-5 animate-fadeInUp">
     <h2 class="subtitle text-primary! text-lg!">{section.title}</h2>
@@ -39,9 +40,14 @@ const switchId = "toggleCoinBill";
         role="region"
         aria-label={`Carrusel de ${section.title}`}
       >
-        <ul class="swiper-wrapper">
+        <div class="swiper-wrapper">
           {section.machines?.map((machine) => (
-            <li class="swiper-slide" role="group" aria-roledescription="slide">
+            <div
+              class="swiper-slide"
+              role="group"
+              aria-label={`Máquina: ${machine.name}`}
+              aria-roledescription="slide"
+            >
               <Link
                 link={machine.link}
                 aria-label={`Ver detalles de ${machine.name}`}
@@ -82,9 +88,9 @@ const switchId = "toggleCoinBill";
                   </footer>
                 </article>
               </Link>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     )
   }
@@ -157,7 +163,6 @@ const switchId = "toggleCoinBill";
     }, 200);
   });
 </script>
-
 
 <script>
   import Swiper from "swiper/bundle";

@@ -13,9 +13,7 @@ interface Props {
 const { section } = Astro.props as Props;
 ---
 
-<SectionLayout
-    aria-labelledby="contact-us-title"
->
+<SectionLayout aria-labelledby="contact-us-title">
   <div class="flex mx-auto gap-x-10">
     <!-- Imagen -->
     {
@@ -58,6 +56,7 @@ const { section } = Astro.props as Props;
                   {item.input_type === InputType.TEXTAREA && (
                     <Textarea
                       label={item.title!}
+                      name={item.title}
                       placeholder={item.subtitle!}
                     />
                   )}
@@ -83,10 +82,28 @@ const { section } = Astro.props as Props;
 </SectionLayout>
 
 <script>
+  import { showAlert } from "@/utils/alert.ts";
+
   const form = document.getElementById("contact-form") as HTMLFormElement;
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    alert("Formulario enviado. Nos pondremos en contacto contigo pronto.");
+
+    const inputs = this.querySelectorAll("input, textarea");
+    const formData: { [key: string]: string } = {};
+
+    inputs.forEach((input) => {
+      const name = (input as HTMLInputElement).getAttribute("name") || "";
+      const value = (input as HTMLInputElement).value;
+      formData[name] = value;
+    });
+
+    if (Object.values(formData).some((value) => value.trim() === "")) {
+      showAlert("Por favor, completa todos los campos del formulario.", "warning");
+      return;
+    }
+
+    console.log("Datos del formulario de contacto:", formData);
+   
     form.reset();
   });
 </script>

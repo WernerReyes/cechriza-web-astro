@@ -1,0 +1,94 @@
+---
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+import type { Section } from "@/interfaces/section.interface";
+import { getMainImage } from "@/utils/get-main-image";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+---
+
+<SectionLayout aria-labelledby="machines-catalog-title">
+  <header class="text-center mb-12">
+    <h2 class="title text-secondary! mb-4">
+      {section.title}
+    </h2>
+    <p class="description max-w-3xl mx-auto">
+      {section.description}
+    </p>
+  </header>
+
+  <!-- Lista de equipos -->
+  <div class="animate-fadeInUp slider-machines">
+    <!-- Tarjeta 1 -->
+
+    <div class="swiper-wrapper">
+      <!-- Tarjeta 2 -->
+
+      {
+        section.machines?.map((machine) => (
+          <article class="swiper-slide h-full bg-white rounded-2xl shadow-md hover:shadow-lg transition-transform duration-300 p-6 flex flex-col items-center text-center hover:scale-105">
+            <figure>
+              <img
+                src={getMainImage(machine)}
+                alt={`Imagen de ${machine.name}`}
+                class="mx-auto h-64 object-contain mb-4"
+              />
+              <figcaption class="sr-only">{machine.name}</figcaption>
+            </figure>
+            <h3 class="text-lg font-semibold text-blue-900 mb-2">
+              {machine.name}
+            </h3>
+            <p class="text-gray-600 text-sm mb-6">{machine.description}</p>
+            {(machine.link || machine.text_button) && (
+              <footer>
+                <Button variant="secondary">
+                  <Link
+                    link={machine.link}
+                    textButton={machine.text_button}
+                    class="text-white!"
+                  />
+                </Button>
+              </footer>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</SectionLayout>
+
+<script>
+  import Swiper from "swiper/bundle";
+  import "swiper/css/bundle";
+
+  new Swiper(".slider-machines", {
+    slidesPerView: 4,
+    spaceBetween: 30,
+    centerInsufficientSlides: true,
+
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+        spaceBetween: 20,
+      },
+      480: {
+        slidesPerView: 2,
+        spaceBetween: 30,
+      },
+
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 40,
+      },
+      1024: {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+    },
+  });
+</script>

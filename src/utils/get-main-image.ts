@@ -7,3 +7,12 @@ export function getMainImage(machine: Machine): string {
     ""
   );
 }
+
+export function getImagesOrderedByMain(machine: Machine): string[] {
+  if (!machine.images) return [];
+  const mainImage = machine.images.find((img) => img.isMain)?.url;
+  const otherImages = machine.images
+    .filter((img) => !img.isMain)
+    .map((img) => img.url);
+  return [mainImage, ...otherImages].filter(Boolean) as string[];
+}

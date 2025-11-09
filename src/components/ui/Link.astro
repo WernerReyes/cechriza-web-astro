@@ -14,9 +14,9 @@ const target = link?.new_tab ? "_blank" : "_self";
 
 {
   !link  && (
-    <a {...props} href="javascript:void(0)" target={target}>
+    <span {...props}>
       {Astro.slots.default ? <slot /> : textButton}
-    </a>
+    </span>
   )
 }
 

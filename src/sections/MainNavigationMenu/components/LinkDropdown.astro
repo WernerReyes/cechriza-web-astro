@@ -54,17 +54,6 @@ const hasChildren = (menuItem: Menu): boolean => {
 
             {hasChildren(subMenu) && (
               <li class="relative border-b border-gray-700 group/sub">
-                <Link
-                  link={subMenu.link!}
-                  class="flex justify-between items-center px-4 py-2 text-sm font-medium"
-                >
-                  {subMenu.title}
-                  <Icon
-                    name="chevron-down"
-                    class="w-4 h-4 ml-2 fill-current transition-transform duration-200 group-hover/sub:rotate-180"
-                  />
-                </Link>
-
                 {/* <!-- NIVEL 3 (solo visible al pasar sobre el segundo nivel) --> */}
                 <ul class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5">
                   {subMenu.children?.map((childMenu) => (
@@ -84,26 +73,25 @@ const hasChildren = (menuItem: Menu): boolean => {
 </li>
 
 {/* <!-- Screen for Mobile --> */}
-<div class="lg:hidden max-w-5xl mx-auto text-white">
+
+<li class="lg:hidden max-w-5xl mx-auto text-white">
   <Accordion title={menu.title} link={menu.link}>
     {
       menu.children?.map((subMenu, i) => (
         <>
           {!hasChildren(subMenu) && (
-            <li
-              class:list={[
-                i > 0 && "max-lg:border-b",
-                "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
-              ]}
-            >
-              {/* <a href={subMenu.link?.url} class="text-white block font-medium">
-                {subMenu.title}
-              </a> */}
-              <Link link={subMenu.link!} class="text-white block font-medium" >
-                {subMenu.title}
-              </Link>
-
-            </li>
+            <ul>
+              <li
+                class:list={[
+                  i > 0 && "max-lg:border-b",
+                  "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
+                ]}
+              >
+                <Link link={subMenu.link!} class="text-white block font-medium">
+                  {subMenu.title}
+                </Link>
+              </li>
+            </ul>
           )}
 
           {hasChildren(subMenu) && (
@@ -116,14 +104,10 @@ const hasChildren = (menuItem: Menu): boolean => {
                       "cursor-pointer max-lg:border-gray-800 max-lg:py-3 max-lg:px-3 relative lg:hover:after:absolute lg:after:bg-tertiary lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-0.5 lg:after:block lg:after:top-7 lg:after:transition-all lg:after:duration-300",
                     ]}
                   >
-                    {/* <a
-                      href={childMenu.link?.page?.slug}
+                    <Link
+                      link={childMenu.link!}
                       class="text-white block font-medium"
                     >
-                      {childMenu.title}
-                    </a> */}
-
-                    <Link link={childMenu.link!} class="text-white block font-medium" >
                       {childMenu.title}
                     </Link>
                   </li>
@@ -135,4 +119,4 @@ const hasChildren = (menuItem: Menu): boolean => {
       ))
     }
   </Accordion>
-</div>
+</li>

@@ -16,12 +16,12 @@ const { section } = Astro.props as Props;
   <div class="flex flex-col items-center justify-center gap-10">
     <!-- Texto principal -->
     <header class="w-full text-center mb-12 md:mb-0 animate-fadeInUp">
-      <h3 class="subtitle mb-2">
+      <h2 class="subtitle mb-2">
         {section.subtitle}
-      </h3>
-      <h2 class="title mb-4">
-        {section.title}
       </h2>
+      <h3 class="title mb-4">
+        {section.title}
+      </h3>
       <p class="description">
         {section.description}
       </p>

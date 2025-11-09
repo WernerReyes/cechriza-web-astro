@@ -1,0 +1,197 @@
+---
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+import Accordion from "@/components/ui/Accordion.astro";
+import type { Section } from "@/interfaces/section.interface";
+import { getMainImage, getImagesOrderedByMain } from "@/utils/get-main-image";
+import Icon from "@/components/ui/Icon.astro";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props as Props;
+
+const machine = section.machines![0];
+
+const machineImages = getImagesOrderedByMain(machine);
+---
+
+<SectionLayout aria-labelledby="machine-details-title">
+  {/* Contenedor principal: imagen + descripción */}
+  <div class="grid gap-8 lg:grid-cols-2 items-start animate-fadeInUp">
+    <div class="grid gap-4">
+      {/* Imagen principal como figura semántica */}
+      <figure
+        class="flex justify-center items-center rounded-lg shadow-md max-w-md shadow-gray-200 p-4 bg-white w-fit mx-auto"
+      >
+        <img
+          class="max-h-96 h-auto rounded-lg object-contain"
+          src={getMainImage(machine)}
+          alt={machine?.name
+            ? `Imagen principal de ${machine.name}`
+            : "Imagen principal"}
+        />
+        {
+          machine?.name && (
+            <figcaption class="sr-only">
+              Imagen principal de {machine.name}
+            </figcaption>
+          )
+        }
+      </figure>
+
+      {/* Miniaturas: lista semántica */}
+      <ul
+        class="gap-4 flex-wrap flex justify-center items-center list-none p-0 m-0"
+        aria-label="Imágenes adicionales"
+      >
+        {
+          machineImages.map((image, i) => (
+            <li
+              class:list={[
+                i === 0 ? "active-image" : "border-gray-300",
+                " bg-white cursor-pointer p-1 rounded-lg shadow-md",
+              ]}
+            >
+              <img
+                class="size-24 max-w-full rounded-lg object-contain"
+                src={image}
+                alt={
+                  machine?.name
+                    ? `Imagen adicional ${i + 1} de ${machine.name}`
+                    : `Imagen adicional ${i + 1}`
+                }
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    {/* Descripción y acciones */}
+    <article aria-labelledby="machine-title" class="animate-fadeInUp">
+      <header>
+        <h2 id="machine-title" class="text-2xl font-bold text-gray-800 mb-4">
+          {machine.name}
+        </h2>
+      </header>
+
+      <p
+        class="text-gray-700 mb-4"
+        role="region"
+        aria-label="Descripción de la máquina"
+      >
+        {machine.description}
+      </p>
+
+      <nav aria-label="Acciones de la máquina" class="flex gap-4">
+        {
+          machine.manual && (
+            <Button variant="secondary">
+              <a
+                href={machine.manual}
+                target="_blank"
+                download
+                role="button"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2"
+                aria-label={`Descargar manual de ${machine.name}`}
+              >
+                <Icon name="download" class="w-5 h-5 mr-2 inline-block" />
+                Descargar manual
+              </a>
+            </Button>
+          )
+        }
+
+        {
+          (section.text_button || section.link) && (
+            <Button variant="secondary">
+              <Link
+                link={section.link}
+                textButton={section.text_button}
+                aria-label={section.text_button}
+              />
+            </Button>
+          )
+        }
+      </nav>
+    </article>
+  </div>
+
+  {/* Encabezado de la sección de especificaciones */}
+  <header class="mt-16 text-center animate-fadeInUp">
+    <h3
+      id="machine-details-title"
+      class="title text-secondary! mb-8 text-center"
+    >
+      {section.title}
+    </h3>
+  </header>
+
+  {
+    /* Acordeón con especificaciones técnicas (sigue usando tu componente Accordion) */
+  }
+  <Accordion
+    title={section.subtitle ?? ""}
+    class="bg-secondary rounded-lg animate-fadeInUp"
+  >
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+      <table
+        class="w-full text-sm text-left rtl:text-right"
+        role="table"
+        aria-label="Especificaciones técnicas"
+      >
+        <caption class="sr-only">Tabla de especificaciones técnicas</caption>
+        <tbody>
+          {
+            machine.technical_specifications?.map((spec) => (
+              <tr class="border-b border-gray-200">
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-primary whitespace-nowrap bg-gray-50"
+                >
+                  {spec.title}
+                </th>
+                <td class="px-6 py-4">{spec.description}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Accordion>
+</SectionLayout>
+
+<style>
+  .active-image {
+    border: 2px solid var(--color-secondary);
+  }
+</style>
+
+<script>
+  const thumbnails = document.querySelectorAll(
+    'ul[aria-label="Imágenes adicionales"] li'
+  ) as NodeListOf<HTMLLIElement>;
+  const mainImage = document.querySelector("figure img") as HTMLImageElement;
+  thumbnails.forEach((thumbnail) => {
+    thumbnail.addEventListener("click", () => {
+      if (thumbnail.classList.contains("active-image")) return;
+
+      // Actualizar la imagen principal
+      const thumbnailImage = thumbnail.querySelector("img") as HTMLImageElement;
+      mainImage.src = thumbnailImage.src;
+      mainImage.alt = thumbnailImage.alt;
+      mainImage.classList.add("animate-fadeInUp");
+      setTimeout(() => {
+        mainImage.classList.remove("animate-fadeInUp");
+      }, 500);
+
+      // Actualizar el borde activo
+      thumbnails.forEach((thumb) => thumb.classList.remove("active-image"));
+      thumbnail.classList.add("active-image");
+    });
+  });
+</script>
