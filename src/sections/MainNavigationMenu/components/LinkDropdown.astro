@@ -22,6 +22,8 @@ const subMenuLinkClass =
 const hasChildren = (menuItem: Menu): boolean => {
   return (menuItem.children?.length ?? 0) > 0;
 };
+
+// console.log('children', menu.children);
 ---
 
 {/* <!-- Screen for Desktop and Tablet --> */}
@@ -54,16 +56,21 @@ const hasChildren = (menuItem: Menu): boolean => {
 
             {hasChildren(subMenu) && (
               <li class="relative border-b border-gray-700 group/sub">
-                {/* <!-- NIVEL 3 (solo visible al pasar sobre el segundo nivel) --> */}
-                <ul class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5">
-                  {subMenu.children?.map((childMenu) => (
-                    <li class="relative border-b border-gray-700">
-                      <Link link={childMenu.link!} class={subMenuLinkClass}>
-                        {childMenu.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <Link link={subMenu.link!} class={subMenuLinkClass}>
+                  {subMenu.title}
+                </Link>
+
+                {subMenu.children && (
+                  <ul class="absolute left-full top-0 min-w-[220px] bg-primary text-white shadow-lg rounded-lg opacity-0 invisible transition-all duration-300 ease-in-out group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0.5">
+                    {subMenu.children.map((childMenu) => (
+                      <li class="relative border-b border-gray-700">
+                        <Link link={childMenu.link!} class={subMenuLinkClass}>
+                          {childMenu.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             )}
           </>

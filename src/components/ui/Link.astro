@@ -10,6 +10,7 @@ interface Props extends HTMLAttributes<"a"> {
 const { link, textButton, ...props } = Astro.props as Props;
 
 const target = link?.new_tab ? "_blank" : "_self";
+
 ---
 
 {
@@ -23,7 +24,8 @@ const target = link?.new_tab ? "_blank" : "_self";
 {
   link?.type == LinkType.PAGE && (
     <a href={link.page?.slug} target={target} {...props}>
-      {Astro.slots.default ? <slot /> : textButton || link.title}
+      
+      {Astro.slots.default ? <slot /> : (textButton || link.title)}
     </a>
   )
 }
@@ -31,7 +33,8 @@ const target = link?.new_tab ? "_blank" : "_self";
 {
   link?.type == LinkType.EXTERNAL && (
     <a href={link.url} target={target} rel="noopener noreferrer" {...props}>
-      {Astro.slots.default ? <slot /> : textButton || link.title}
+
+      {Astro.slots.default ? <slot /> : (textButton || link.title)}
     </a>
   )
 }
@@ -45,7 +48,8 @@ const target = link?.new_tab ? "_blank" : "_self";
       download
       {...props}
     >
-      {Astro.slots.default ? <slot /> : textButton || link.title}
+    
+      {Astro.slots.default ? <slot /> : (textButton || link.title)}
     </a>
   )
 }

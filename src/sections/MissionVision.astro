@@ -123,6 +123,7 @@ const { section } = Astro.props as Props;
 
   function getSVGContent() {
     return fetch(imagePath, {
+      credentials: "include",
       headers: {
         "Content-Type": "image/svg+xml",
       },
