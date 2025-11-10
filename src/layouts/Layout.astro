@@ -1,5 +1,5 @@
 ---
-  import Alert from "@/components/ui/Alert.astro";
+import Alert from "@/components/ui/Alert.astro";
 import "../styles/global.css";
 
 type Props = {
@@ -13,10 +13,10 @@ type Props = {
 
 const {
   title,
-  description = "Descripción genérica del sitio",
+  description = "Expertos en la gestión del efectivo. Con más de 8000 máquinas contadoras de billetes y monedas vendidas. Contamos con servicio técnico en todo el Perú",
   image = "/cechriza_logo.jpg",
   url = Astro.url,
-  keywords = "Cechriza, Cechriza S.A.C, soluciones de efectivo, equipos de procesamiento de efectivo, mantenimiento de equipos de efectivo",
+  keywords = "contadora de billetes, contadora de monedas, cechriza, servicio tecnico, mantenimiento, billete falso, recicladora de dinero, bcr, maquina contadora, perú, lima, arequipa, trujillo, cuenta, detectar, detector, contador, valorizador, clasificador, sistema de depósito, venta",
   author = "Cechriza S.A.C",
 } = Astro.props as Props;
 
@@ -31,6 +31,8 @@ const siteName = "Cechriza S.A.C";
 
     <!-- Título y descripción -->
     <title>{title} | {siteName}</title>
+    <meta name="language" content="ES" />
+
     <meta name="description" content={description} />
 
     <!-- Palabras clave -->
@@ -49,13 +51,14 @@ const siteName = "Cechriza S.A.C";
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={`${title} | ${siteName}`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
 
     <!-- Favicon y color -->
     <link rel="icon" href="/favicon.ico" />
-    <meta name="theme-color" content="oklch(.21 .034 264.665)">
+
+    <meta name="theme-color" content="oklch(.21 .034 264.665)" />
 
     <!-- Canonical -->
     <link rel="canonical" href={url} />
@@ -63,73 +66,28 @@ const siteName = "Cechriza S.A.C";
     <!-- Robots -->
     <meta name="robots" content="index, follow" />
 
+    <!-- Apple Touch Icons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="114×114"
+      href="/apple-icon-114x114.png"
+    />
+    <link rel="apple-touch-icon" sizes="72×72" href="/apple-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="72×72" href="/apple-icon-72x72.png" />
+
     <!-- Estructura JSON-LD (para datos enriquecidos) -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: title,
-  description,
-  url,
-  image,
-})}></script>
-
-
-
-
-  </head>
-
-
-  <!-- <script
-      define:vars={{
-        phoneNumber: PHONE_NUMBER,
-        urlSite: URL_SITE,
-      }}
-    type="application/ld+json">
-      {
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
         "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": ["TaxiService", "Organization"],
-            "@id": `${urlSite}/#organization`,
-            "name": "Taxi Satelital 355",
-            "url": `${urlSite}`,
-            "description": "Empresa de servicio de transporte de pasajeros con la flota más grande, moderna y confiable de Lima",
-            "telephone": {phoneNumber},
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Lima",
-              "addressCountry": "PE"
-            },
-            "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su 00:00-23:59",
-            "priceRange": "$$",
-            "serviceArea": {
-              "@type": "GeoCircle",
-              "geoMidpoint": {
-                "@type": "GeoCoordinates",
-                "latitude": -12.021093,
-                "longitude": -77.118858
-              },
-              "geoRadius": "50000"
-            }
-          },
-          {
-            "@type": "WebSite",
-            "@id": `${urlSite}/#website`,
-            "url": `${urlSite}`,
-            "name": "Taxi Green Lima",
-            "publisher": {
-              "@id": `${urlSite}/#organization`
-            },
-            "inLanguage": "es",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": `${urlSite}/?s={search_term_string}`,
-              "query-input": "required name=search_term_string"
-            }
-          }
-        ]
-      }
-    </script> -->
+        "@type": "WebPage",
+        name: title,
+        description,
+        url,
+        image,
+      })}
+    />
+  </head>
 
   <body>
     <main class="fondo_paralelo">
@@ -138,7 +96,6 @@ const siteName = "Cechriza S.A.C";
     </main>
   </body>
 </html>
-
 
 <style>
   .fondo_paralelo {
@@ -150,18 +107,17 @@ const siteName = "Cechriza S.A.C";
 
   /* Primera franja */
   .fondo_paralelo::before,
-.fondo_paralelo::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
- 
-  transform: skew(20deg);
-  pointer-events: none;
-  z-index: -1;
-}
+  .fondo_paralelo::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
 
+    transform: skew(20deg);
+    pointer-events: none;
+    z-index: -1;
+  }
 
   /* Colores y animaciones */
   .fondo_paralelo::before {
@@ -229,10 +185,8 @@ const siteName = "Cechriza S.A.C";
   }
 </style>
 
-
 <script>
-
-   const links = document.querySelectorAll("nav a, footer a");
+  const links = document.querySelectorAll("nav a, footer a");
   const activeLink = window.location.pathname.split("/").pop();
 
   for (const link of links) {
@@ -240,5 +194,4 @@ const siteName = "Cechriza S.A.C";
       link.classList.add("!text-tertiary");
     }
   }
-
 </script>

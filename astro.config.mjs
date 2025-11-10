@@ -9,7 +9,6 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   output: 'server', // 👈 genera SSR
   // adapter: node({ mode: 'standalone' }),
-  site: process.env.URL_SITE,
   adapter: vercel({}),
   redirects: {
     '/': '/home',
