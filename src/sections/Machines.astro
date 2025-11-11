@@ -70,7 +70,7 @@ const uniqueCategories = getUniqueCategories(section);
         {
           section.machines?.map((machine) => (
             <article
-              class="machine max-w-full w-full"
+              class="machine"
               data-id={machine.id_machine}
               data-category={machine.category?.id_category}
             >
@@ -79,7 +79,7 @@ const uniqueCategories = getUniqueCategories(section);
                 aria-label={`Ver detalles de ${machine.name}`}
               
               >
-                <div class="wrapper max-w-full">
+                <div class="wrapper">
                   <figure class="container">
                     <div class="top">
                       <img

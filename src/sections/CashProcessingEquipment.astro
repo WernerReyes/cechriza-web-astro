@@ -14,6 +14,7 @@ interface Props {
 const { section } = Astro.props as Props;
 
 const switchId = "toggleCoinBill";
+
 ---
 
 <SectionLayout
@@ -36,12 +37,12 @@ const switchId = "toggleCoinBill";
   {
     section.machines && (
       <div
-        class="slider-machines animate-fadeInUp"
+        class="slider-machines animate-fadeInUp swiper "
         role="region"
         aria-label={`Carrusel de ${section.title}`}
       >
-        <div class="swiper-wrapper">
-          {section.machines?.map((machine) => (
+        <div class="swiper-wrapper max-w-full w-full">
+          {section.machines.map((machine) => (
             <div
               class="swiper-slide"
               role="group"
