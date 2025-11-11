@@ -70,21 +70,16 @@ const uniqueCategories = getUniqueCategories(section);
         {
           section.machines?.map((machine) => (
             <article
-              class="machine"
+              class="machine max-w-full w-full"
               data-id={machine.id_machine}
               data-category={machine.category?.id_category}
             >
-              {/* <a
-                href={`detalle_equipo?id=${machine.id_machine}&type=${machine.category?.type}`}
-                aria-label={`Ver detalles de ${machine.name}`}
-              > */}
               <Link
                link={machine.link}
                 aria-label={`Ver detalles de ${machine.name}`}
-                transition:name={machine.link?.page?.title}
-
+              
               >
-                <div class="wrapper">
+                <div class="wrapper max-w-full">
                   <figure class="container">
                     <div class="top">
                       <img
