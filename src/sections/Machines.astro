@@ -46,6 +46,7 @@ const uniqueCategories = getUniqueCategories(section);
               type="button"
               class="w-full cursor-pointer text-left px-4 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-sm transition-colors duration-200"
               data-id={category.id_category}
+              data-title={category.title}
               aria-label={`Ver categoría: ${category.title}`}
             >
               <Icon name="square-arrow-right" class="inline-block mr-2" />
@@ -141,6 +142,10 @@ const uniqueCategories = getUniqueCategories(section);
 >
 
 
+
+
+
+
   // const inpu
   document.addEventListener("DOMContentLoaded", () => {
   const machineGrid = document.getElementById("machine-grid");
@@ -152,8 +157,52 @@ const uniqueCategories = getUniqueCategories(section);
   let activeCategory: any = null; // categoría seleccionada
   let searchTerm = ""; // texto del buscador
 
-  // 🔍 Función para aplicar ambos filtros
-  function applyFilters() {
+ 
+  // Escuchar cambios en el buscador
+  input?.addEventListener("input", function () {
+    searchTerm = this.value.toLowerCase();
+    applyFilters();
+  });
+
+  // 🏷️ Escuchar clicks en las categorías
+  Array.from(categoryNav.querySelectorAll("button")).forEach((button) => {
+    button.addEventListener("click", function () {
+      const categoryId = this.getAttribute("data-id");
+
+      // Marcar botón activo visualmente (opcional)
+      Array.from(categoryNav.querySelectorAll("button")).forEach((btn) =>
+        btn.classList.remove("active-category")
+      );
+      this.classList.add("active-category");
+
+      activeCategory = categoryId;
+      applyFilters();
+    });
+  });
+
+  // 👀 Inicializa el filtro al cargar
+  applyFilters();
+
+
+  // Filter By Params
+   const queryString = window.location.search;
+const params = new URLSearchParams(queryString);
+
+const queryParam = params.keys().next().value;
+
+
+  if (queryParam) {
+    const categoryButton = categoryNav.querySelector(`button[data-title="${queryParam}"]`) as HTMLElement;
+    if (categoryButton) {
+      console.log("Found category button for param:", queryParam);
+      categoryButton.click();
+    }
+  }
+   
+
+
+
+   function applyFilters() {
     let visibleCount = 0;
 
     machineElements.forEach((machineElement) => {
@@ -180,31 +229,12 @@ const uniqueCategories = getUniqueCategories(section);
     }
   }
 
-  // 🧠 Escuchar cambios en el buscador
-  input?.addEventListener("input", function () {
-    searchTerm = this.value.toLowerCase();
-    applyFilters();
-  });
-
-  // 🏷️ Escuchar clicks en las categorías
-  Array.from(categoryNav.querySelectorAll("button")).forEach((button) => {
-    button.addEventListener("click", function () {
-      const categoryId = this.getAttribute("data-id");
-
-      // Marcar botón activo visualmente (opcional)
-      Array.from(categoryNav.querySelectorAll("button")).forEach((btn) =>
-        btn.classList.remove("active-category")
-      );
-      this.classList.add("active-category");
-
-      activeCategory = categoryId;
-      applyFilters();
-    });
-  });
-
-  // 👀 Inicializa el filtro al cargar
-  applyFilters();
+  
 });
+
+
+
+
 
 </script>
 

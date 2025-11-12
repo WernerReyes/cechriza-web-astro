@@ -5,9 +5,10 @@ import type { HTMLAttributes } from "astro/types";
 interface Props extends HTMLAttributes<"a"> {
   link?: Link | null;
   textButton?: string | null;
+  query?: string;
 }
 
-const { link, textButton, ...props } = Astro.props as Props;
+const { link, textButton, query, ...props } = Astro.props as Props;
 
 const target = link?.new_tab ? "_blank" : "_self";
 
@@ -23,7 +24,7 @@ const target = link?.new_tab ? "_blank" : "_self";
 
 {
   link?.type == LinkType.PAGE && (
-    <a href={link.page?.slug} target={target} {...props}>
+    <a href={link.page?.slug + (query ? `?${query.trim()}` : "")} target={target} {...props}>
       
       {Astro.slots.default ? <slot /> : (textButton || link.title)}
     </a>

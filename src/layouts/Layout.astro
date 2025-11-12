@@ -189,8 +189,14 @@ const siteName = "Cechriza S.A.C";
   const links = document.querySelectorAll("nav a, footer a");
   const activeLink = window.location.pathname.split("/").pop();
 
+  const queryString = window.location.search;
+const params = new URLSearchParams(queryString);
+
+const queryParam = params.keys().next().value;
+
+
   for (const link of links) {
-    if (link.getAttribute("href") === activeLink) {
+    if (link.getAttribute("href") === activeLink || link.getAttribute("href") === activeLink + `?${queryParam}`) {
       link.classList.add("!text-tertiary");
     }
   }
