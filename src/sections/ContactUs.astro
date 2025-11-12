@@ -38,7 +38,12 @@ const { section } = Astro.props as Props;
           </p>
         </header>
 
-        <form id="contact-form" class="space-y-5 mt-12 lg:pb-12">
+        <form
+          data-emailContact={section?.subtitle}
+          id="contact-form"
+          class="space-y-5 mt-12 lg:pb-12"
+          novalidate
+        >
           {
             section.section_items &&
               section.section_items.map((item) => (
@@ -50,6 +55,7 @@ const { section } = Astro.props as Props;
                       label={item.title!}
                       type={item.input_type?.toLowerCase() as any}
                       placeholder={item.subtitle!}
+                      autocomplete="off"
                     />
                   )}
 
@@ -83,27 +89,112 @@ const { section } = Astro.props as Props;
 
 <script>
   import { showAlert } from "@/utils/alert.ts";
+  import { actions } from "astro:actions";
+  import nativeToast from 'native-toast'
+   import "native-toast/dist/native-toast.css";
 
   const form = document.getElementById("contact-form") as HTMLFormElement;
-  form.addEventListener("submit", function (event) {
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const inputs = this.querySelectorAll("input, textarea");
     const formData: { [key: string]: string } = {};
 
     inputs.forEach((input) => {
-      const name = (input as HTMLInputElement).getAttribute("name") || "";
+      const name = (input as HTMLInputElement).getAttribute("name")?.toLowerCase() || "";
       const value = (input as HTMLInputElement).value;
       formData[name] = value;
     });
 
     if (Object.values(formData).some((value) => value.trim() === "")) {
-      showAlert("Por favor, completa todos los campos del formulario.", "warning");
+      // showAlert(
+      //   "Por favor, completa todos los campos del formulario.",
+      //   "warning"
+      // );
+        nativeToast({
+          message: "Por favor, completa todos los campos del formulario.",
+          position: "north-east",
+          timeout: 3000,
+          type: "warning",
+        });
       return;
     }
 
-    console.log("Datos del formulario de contacto:", formData);
-   
-    form.reset();
+    if (
+      Array.from(inputs).some((input) => {
+        const type = (input as HTMLInputElement).getAttribute("type");
+        const value = (input as HTMLInputElement).value;
+        return type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      })
+    ) {
+       nativeToast({
+        message: "Por favor, ingresa un email válido.",
+        position: "north-east",
+        timeout: 3000,
+        type: "error",
+      });
+      return;
+    }
+
+    const emailContact = this.getAttribute("data-emailContact") as string;
+
+    if (!emailContact) {
+       nativeToast({
+        message: "Error interno: dirección de contacto no encontrada.",
+        position: "north-east",
+        timeout: 3000,
+        type: "error",
+      });   
+      return;
+    }
+
+    const from =
+      form["Email"] ||
+      form["Correo"] ||
+      form["email"] ||
+      form["correo"] ||
+      form["From"] ||
+      (form.querySelector('input[type="email"]') as HTMLInputElement);
+    const subject =
+      formData["Asunto"] ||
+      formData["Subject"] ||
+      formData["subject"] ||
+      formData["asunto"] ||
+
+      `Nuevo mensaje de ${from.value}`;
+
+    const extraFields = Array.from(inputs).filter((input) => {
+      const name = (input as HTMLInputElement).getAttribute("name")?.toLowerCase() || "";
+      return ![from?.getAttribute("name")?.toLowerCase() || "", "subject", "asunto"].includes(name);
+    }) as HTMLInputElement[];
+
+    const sendData = new FormData();
+    sendData.append("to", emailContact);
+    sendData.append("from", from?.value);
+    sendData.append("subject", subject);  
+    sendData.append("extraFields", JSON.stringify(extraFields.map(field => ({
+      name: field.getAttribute("name"),
+      value: field.value
+    }))));
+
+    const response = await actions.EmailSend(sendData);
+    if (!response.data) {
+        nativeToast({
+          message: "Error al enviar el mensaje. Por favor, intenta nuevamente más tarde.",
+          position: "north-east",
+          timeout: 3000,
+          type: "error",
+        });
+        return;
+    } 
+
+    nativeToast({
+      message: "¡Mensaje enviado con éxito!",
+      position: "north-east",
+      timeout: 3000,
+      type: "success",
+    });
+
+    // form.reset();
   });
 </script>

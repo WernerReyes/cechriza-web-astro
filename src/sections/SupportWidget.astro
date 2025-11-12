@@ -53,37 +53,59 @@ const { section } = Astro.props as Props;
 
   <!-- Formulario de contacto -->
   <form
-  data-phone={section?.subtitle}
+    data-phone={section?.subtitle}
     class="space-y-3"
     id="support-chat-form"
     aria-label="Formulario de contacto con soporte"
   >
-    <Textarea rows={3} class="h-16!" placeholder="Escribe tu mensaje..." />
+    <Textarea
+      rows={3}
+      class="h-16!"
+      placeholder={section?.description || "Escribe tu mensaje aquí..."}
+    />
 
     <button
       type="submit"
       class="w-full cursor-pointer bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
     >
-      Enviar
+      {section?.text_button || "Enviar"}
     </button>
   </form>
 </aside>
 
-<script
- 
->
-import { showAlert } from "@/utils/alert";
+<script>
+  import "native-toast/dist/native-toast.css";
+  import nativeToast from 'native-toast'
+  import { showAlert } from "@/utils/alert";
 
-  const supportForm = document.getElementById("support-chat-form") as HTMLFormElement;
+  const supportForm = document.getElementById(
+    "support-chat-form"
+  ) as HTMLFormElement;
   supportForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    const message = (this.querySelector("textarea") as HTMLTextAreaElement).value;
+    const message = (this.querySelector("textarea") as HTMLTextAreaElement)
+      .value;
     if (message.trim() === "") {
-        showAlert("Por favor, escribe un mensaje antes de enviar.", "warning");
+      // showAlert("Por favor, escribe un mensaje antes de enviar.", "warning");
+        nativeToast({
+          message: "Por favor, escribe un mensaje antes de enviar.",
+          position: "north-east",
+          timeout: 3000,
+          type: "warning",
+        });
 
       return;
     }
     const phoneNumber = this.getAttribute("data-phone") as string;
+    if (!phoneNumber) {
+        nativeToast({
+          message: "Error interno: número de teléfono de soporte no encontrado.",
+          position: "north-east",
+          timeout: 3000,
+          type: "error",
+        });
+      return;
+    }
 
     const whatsappURL = `https://wa.me/+51${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, "_blank");
