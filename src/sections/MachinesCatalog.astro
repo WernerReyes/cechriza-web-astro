@@ -26,24 +26,24 @@ const { section } = Astro.props as Props;
   <div class="animate-fadeInUp slider-machines swiper max-w-full">
     <!-- Tarjeta 1 -->
 
-    <div class="swiper-wrapper">
+    <div class="swiper-wrapper py-6!">
       <!-- Tarjeta 2 -->
 
       {
         section.machines?.map((machine) => (
-          <article class="swiper-slide h-full bg-white rounded-2xl shadow-md hover:shadow-lg transition-transform duration-300 p-6 flex flex-col items-center text-center hover:scale-105">
+          <article class="swiper-slide h-full bg-white rounded-2xl shadow-md hover:shadow-lg transition-transform duration-300  flex flex-col items-center text-center hover:scale-105">
             <figure>
               <img
                 src={getMainImage(machine)}
                 alt={`Imagen de ${machine.name}`}
-                class="mx-auto h-64 object-contain mb-4"
+                class="mx-auto h-48 object-contain mb-4"
               />
               <figcaption class="sr-only">{machine.name}</figcaption>
             </figure>
             <h3 class="text-lg font-semibold text-secondary mb-2">
               {machine.name}
             </h3>
-            <p class="text-gray-600 text-sm mb-6">{machine.description}</p>
+            <p class="text-gray-600 text-sm mb-6 px-4">{machine.description}</p>
             {(machine.link || machine.text_button) && (
               <footer>
                 <Button variant="secondary">
@@ -60,35 +60,35 @@ const { section } = Astro.props as Props;
       }
     </div>
   </div>
+
+  <script>
+    import Swiper from "swiper/bundle";
+    import "swiper/css/bundle";
+
+    new Swiper(".slider-machines", {
+      slidesPerView: 4,
+      spaceBetween: 30,
+      centerInsufficientSlides: true,
+
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 20,
+        },
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 30,
+        },
+
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 50,
+        },
+      },
+    });
+  </script>
 </SectionLayout>
-
-<script>
-  import Swiper from "swiper/bundle";
-  import "swiper/css/bundle";
-
-  new Swiper(".slider-machines", {
-    slidesPerView: 4,
-    spaceBetween: 30,
-    centerInsufficientSlides: true,
-
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-        spaceBetween: 20,
-      },
-      480: {
-        slidesPerView: 2,
-        spaceBetween: 30,
-      },
-
-      768: {
-        slidesPerView: 3,
-        spaceBetween: 40,
-      },
-      1024: {
-        slidesPerView: 4,
-        spaceBetween: 50,
-      },
-    },
-  });
-</script>
