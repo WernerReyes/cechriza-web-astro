@@ -1,7 +1,6 @@
 ---
 import SectionLayout from "@/layouts/SectionLayout.astro";
 import Link from "@/components/ui/Link.astro";
-import Button from "@/components/ui/Button.astro";
 import type { Section } from "@/interfaces/section.interface";
 import { getMainImage } from "@/utils/get-main-image";
 
@@ -45,14 +44,13 @@ const { section } = Astro.props as Props;
             </h3>
             <p class="text-gray-600 text-sm mb-6 px-4">{machine.description}</p>
             {(machine.link || machine.text_button) && (
-              <footer>
-                <Button variant="secondary">
+              <footer class="mt-auto pb-6">        
                   <Link
                     link={machine.link}
                     textButton={machine.text_button}
                     class="text-white!"
+                    variant="button"
                   />
-                </Button>
               </footer>
             )}
           </article>

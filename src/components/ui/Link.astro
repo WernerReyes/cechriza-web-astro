@@ -6,17 +6,34 @@ interface Props extends HTMLAttributes<"a"> {
   link?: Link | null;
   textButton?: string | null;
   query?: string;
+  variant?: Variants;
 }
 
-const { link, textButton, query, ...props } = Astro.props as Props;
+const {
+  link,
+  textButton,
+  query,
+  variant,
+  class: className,
+  ...props
+} = Astro.props as Props;
 
 const target = link?.new_tab ? "_blank" : "_self";
 
+type Variants = "button";
+
+const buttonStyle =
+  "py-3 cursor-pointer px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg disabled:opacity-50 disabled:pointer-events-none transition-colors duration-200 focus:outline-hidden bg-secondary text-white hover:bg-primary focus:primary border-transparent";
 ---
 
 {
-  !link  && (
-    <span {...props}>
+  !link && (
+    <span
+      {...props}
+      class:list={[
+        variant == "button" ? `${buttonStyle} ${className}` : className,
+      ]}
+    >
       {Astro.slots.default ? <slot /> : textButton}
     </span>
   )
@@ -24,18 +41,31 @@ const target = link?.new_tab ? "_blank" : "_self";
 
 {
   link?.type == LinkType.PAGE && (
-    <a href={link.page?.slug + (query ? `?${query.trim()}` : "")} target={target} {...props}>
-      
-      {Astro.slots.default ? <slot /> : (textButton || link.title)}
+    <a
+      href={link.page?.slug + (query ? `?${query.trim()}` : "")}
+      target={target}
+      class:list={[
+        variant == "button" ? `${buttonStyle} ${className}` : className,
+      ]}
+      {...props}
+    >
+      {Astro.slots.default ? <slot /> : textButton || link.title}
     </a>
   )
 }
 
 {
   link?.type == LinkType.EXTERNAL && (
-    <a href={link.url} target={target} rel="noopener noreferrer" {...props}>
-
-      {Astro.slots.default ? <slot /> : (textButton || link.title)}
+    <a
+      href={link.url}
+      target={target}
+      class:list={[
+        variant == "button" ? `${buttonStyle} ${className}` : className,
+      ]}
+      rel="noopener noreferrer"
+      {...props}
+    >
+      {Astro.slots.default ? <slot /> : textButton || link.title}
     </a>
   )
 }
@@ -45,12 +75,14 @@ const target = link?.new_tab ? "_blank" : "_self";
     <a
       href={link.file_url}
       target={target}
+      class:list={[
+        variant == "button" ? `${buttonStyle} ${className}` : className,
+      ]}
       rel="noopener noreferrer"
       download
       {...props}
     >
-    
-      {Astro.slots.default ? <slot /> : (textButton || link.title)}
+      {Astro.slots.default ? <slot /> : textButton || link.title}
     </a>
   )
 }

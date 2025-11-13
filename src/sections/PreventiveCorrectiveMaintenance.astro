@@ -1,6 +1,5 @@
 ---
 import SectionLayout from "@/layouts/SectionLayout.astro";
-import Button from "@/components/ui/Button.astro";
 import Link from "@/components/ui/Link.astro";
 import type { Section } from "@/interfaces/section.interface";
 
@@ -31,7 +30,9 @@ const { section } = Astro.props as Props;
       )
     }
 
-    <div class="flex flex-col gap-4  mx-auto max-lg:text-center  max-lg:items-center max-lg:mt-10">
+    <div
+      class="flex flex-col gap-4 mx-auto max-lg:text-center max-lg:items-center max-lg:mt-10"
+    >
       <h2 class="subtitle text-white!">
         {section.title}
       </h2>
@@ -44,22 +45,16 @@ const { section } = Astro.props as Props;
           section.additional_info_list &&
             section.additional_info_list.map((info) => <li>{info.label}</li>)
         }
-       
       </ul>
 
       {
-        section.text_button && (
-          <Button
-            variant="secondary"
+        (section.text_button || section.link) && (
+          <Link
+            link={section.link}
+            variant="button"
             class="mt-4 w-fit hover:scale-105 transition-transform duration-300 hover:bg-tertiary"
-          >
-            
-            <Link
-              link={section.link}
-              
-              textButton={section.text_button}
-            />
-          </Button>
+            textButton={section.text_button}
+          />
         )
       }
     </div>
@@ -70,15 +65,17 @@ const { section } = Astro.props as Props;
         alt="Banner Cechriza"
         class="shadow-lg rounded-lg shadow-amber-50 lg:col-span-1 max-h-[400px] lg:object-contain"
       />
-      <Button
-        variant="secondary"
-        class="mt-10 w-fit hover:scale-105 transition-transform duration-300 hover:bg-tertiary"
-      >
-        <Link
-          link={section.extra_link}
-          textButton={section.extra_text_button}
-        />
-      </Button>
+
+      {
+        (section.extra_text_button || section.extra_link) && (
+          <Link
+            variant="button"
+            class="mt-10 w-fit hover:scale-105 transition-transform duration-300 hover:bg-tertiary"
+            link={section.extra_link}
+            textButton={section.extra_text_button}
+          />
+        )
+      }
     </div>
   </div>
 </SectionLayout>

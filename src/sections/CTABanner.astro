@@ -1,7 +1,6 @@
 ---
 import type { Section } from "@/interfaces/section.interface";
 import Link from "@/components/ui/Link.astro";
-import Button from "@/components/ui/Button.astro";
 import SectionLayout from "@/layouts/SectionLayout.astro";
 
 interface Props {
@@ -13,7 +12,7 @@ const { section } = Astro.props as Props;
 
 <SectionLayout
   class="relative bg-primary text-white py-20 px-6 lg:px-24 overflow-hidden"
-    aria-labelledby="cta-title"
+  aria-labelledby="cta-title"
 >
   <div
     class="absolute inset-0"
@@ -38,18 +37,19 @@ const { section } = Astro.props as Props;
     </p>
 
     {
-      section.text_button && (
+      (section.text_button || section.link) && (
         <footer>
-          <Button variant="secondary" class="rounded-3xl!">
-            <Link
-              link={section.link}
-              textButton={section.text_button}
-              class="text-white!"
-            />
-          </Button>
+        
+          <Link
+            variant="button"
+            link={section.link}
+            textButton={section.text_button}
+            class="text-white!"
+          />
+         
         </footer>
       )
     }
   </div>
-  <!-- </section> -->
+
 </SectionLayout>

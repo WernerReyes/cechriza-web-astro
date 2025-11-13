@@ -108,13 +108,12 @@ const machineImages = getImagesOrderedByMain(machine);
 
         {
           (section.text_button || section.link) && (
-            <Button variant="secondary">
-              <Link
-                link={section.link}
-                textButton={section.text_button}
-                aria-label={section.text_button}
-              />
-            </Button>
+            <Link
+              variant="button"
+              link={section.link}
+              textButton={section.text_button}
+              aria-label={section.text_button}
+            />
           )
         }
       </nav>

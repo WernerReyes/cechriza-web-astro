@@ -106,9 +106,9 @@ aria-labelledby="full-maintenance-plan-title"
         <!-- Llamado a la acción -->
         {(section.link || section.text_button) && (
           <footer class="mt-8">
-            <Button variant="secondary" aria-label="Ir al enlace relacionado">
-              <Link link={section.link} textButton={section.text_button!} />
-            </Button>
+          
+              <Link variant="button" link={section.link} textButton={section.text_button!} />
+           
           </footer>
         )}
       </div>
