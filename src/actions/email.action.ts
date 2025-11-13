@@ -2,9 +2,12 @@ import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 
 import {
-  MAILER_SERVICE,
-  MAILER_EMAIL,
-  MAILER_SECRET_KEY,
+  MAIL_MAILER,
+  MAIL_HOST,
+  MAIL_PORT,
+  MAIL_USERNAME,
+  MAIL_PASSWORD,
+  MAIL_ENCRYPTION,
 } from "astro:env/server";
 import nodemailer, { type Transporter, type SendMailOptions } from "nodemailer";
 
@@ -13,24 +16,31 @@ export class EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: MAILER_SERVICE,
+      service: MAIL_MAILER,
       auth: {
-        user: MAILER_EMAIL,
-        pass: MAILER_SECRET_KEY,
+        user: MAIL_USERNAME,
+        pass: MAIL_PASSWORD,
       },
+      host: MAIL_HOST,
+      port: Number(MAIL_PORT),
+      secure: MAIL_ENCRYPTION === "ssl", // true for 465, false for other ports
+      from: MAIL_USERNAME,
+      to: MAIL_USERNAME,
       debug: true,
       logger: true,
     });
   }
 
   async sendEmail(options: SendMailOptions): Promise<boolean> {
-    const { subject, html, from } = options;
+    const { subject, html, replyTo } = options;
 
     try {
       await this.transporter.sendMail({
-        from: from,
-        to: MAILER_EMAIL,
+        
+        from: MAIL_USERNAME,
+        to: MAIL_USERNAME,
         subject: subject,
+        replyTo,
         html: html,
       });
 
@@ -45,60 +55,77 @@ export class EmailService {
 export const EmailSend = defineAction({
   accept: "form",
   input: z.object({
-    to: z.string().email(),
-    from: z.string().email(),
+    email: z.string().email().optional(),
     subject: z.string().optional(),
     extraFields: z.string().optional(),
   }),
-  handler: async ({ to, from, subject, extraFields }) => {
+  handler: async ({ email, subject, extraFields }) => {
     console.log({
-      to,
-      from,
       subject,
       extraFields,
-    })
+    });
 
-    const extraFieldsParsed = (extraFields ? JSON.parse(extraFields) : []) as Array<{ name: string; value: string }>;
-    console.log({ extraFieldsParsed }
-)
+    const extraFieldsParsed = (
+      extraFields ? JSON.parse(extraFields) : []
+    ) as Array<{ name: string; value: string }>;
+    console.log({ extraFieldsParsed });
 
     const emailService = new EmailService();
 
+
     const emailSent = await emailService.sendEmail({
-      to,
-      from,
-      subject: subject || `Nuevo mensaje de ${from}`,
+      replyTo: email || undefined,
+      subject:
+        subject || (email ? `Nuevo mensaje de ${email}` : "Nuevo mensaje"),
       html: `
-        <div style="font-family: Arial, sans-serif; 
-        color: #333; max-width: 600px; margin: 0 auto;
-         padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-          <h2 style="color: #4A90E2; text-align: center;">Nuevo Mensaje de Contacto</h2>
-          <p style="font-size: 16px; line-height: 1.6;">
-            <strong>El cliente con el correo:</strong> 
-            <a href="mailto:${from}" style="color: #4A90E2; text-decoration: none;">${from}</a>
-          </p>
-          
-          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <thead>
-              <tr>
-                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; text-align: left;">Campo</th>
-                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4; text-align: left;">Valor</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${extraFieldsParsed
-                ?.map(
-                  (field) => `
-                    <tr>
-                      <td style="border: 1px solid #ddd; padding: 8px;">${field.name}</td>
-                      <td style="border: 1px solid #ddd; padding: 8px;">${field.value}</td>
-                    </tr>
-                  `
-                )
-                .join("")}
-            </tbody>
-          </table>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
+        <div style="background-color: #26499E; padding: 30px 20px; text-align: center;">
+          <h2 style="color: white; margin: 0;">Mensaje enviado desde la web</h2>
         </div>
+        <div style="padding: 30px; background-color: white;">
+
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #26499E;">
+            <h3 style="color: #26499E; margin: 0 0 15px 0; font-size: 16px;">Resumen de consulta:</h3>
+            
+            ${
+              email
+                ? `<div style="margin-bottom: 15px;">
+              <p style="margin: 0 0 5px 0; color: #777; font-size: 14px; font-weight: bold;">Correo:</p>
+              <p style="margin: 0; color: #333; font-size: 15px;">${email}</p>
+            </div>`
+                : ""
+            }
+            
+            ${
+              subject
+                ? `<div style="margin-bottom: 15px;">
+              <p style="margin: 0 0 5px 0; color: #777; font-size: 14px; font-weight: bold;">Asunto:</p>
+              <p style="margin: 0; color: #333; font-size: 15px;">${subject}</p>
+            </div>`
+                : ""
+            }
+
+            ${extraFieldsParsed
+              ?.map(
+                (field) => `<div style="margin-bottom: 15px;">
+                  <p style="margin: 0 0 5px 0; color: #777; font-size: 14px; font-weight: bold;">${field.name}:</p>
+                  <p style="margin: 0; color: #333; font-size: 15px;">${field.value}</p>
+                </div>`
+              )
+              .join("")}  
+
+           
+          </div>
+          
+         
+        </div>
+        <div style="background-color: #f5f5f5; padding: 20px; text-align: center; font-size: 12px; color: #777;">
+          <p>© 2025 Cechriza S.A.C. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    
+      
       `,
     });
     return emailSent;

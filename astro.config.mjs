@@ -31,18 +31,39 @@ export default defineConfig({
       }),
 
 
-      MAILER_SERVICE: envField.string({
+      MAIL_MAILER: envField.string({
         context: 'server',
         access: 'secret'
       }),
-      MAILER_EMAIL: envField.string({
+      MAIL_USERNAME: envField.string({
         context: 'server',
         access: 'secret'
       }),
-      MAILER_SECRET_KEY: envField.string({
+      MAIL_PASSWORD: envField.string({
+        context: 'server',
+        access: 'secret'
+      }),
+
+      MAIL_HOST: envField.string({
+        context: 'server',
+        access: 'secret'
+      }),
+      MAIL_PORT: envField.string({
+        context: 'server',
+        access: 'secret'
+      }),
+      MAIL_ENCRYPTION: envField.string({
         context: 'server',
         access: 'secret'
       }),
     }
   },
 });
+
+
+// MAIL_MAILER=smtp
+// MAIL_HOST=smtp.office365.com
+// MAIL_PORT=587
+// MAIL_USERNAME=david.yauri@cechriza.com
+// MAIL_PASSWORD=Cechriz@2930
+// MAIL_ENCRYPTION=tls

@@ -147,7 +147,7 @@ const { section } = Astro.props as Props;
       return;
     }
 
-    const from =
+    const email =
       form["Email"] ||
       form["Correo"] ||
       form["email"] ||
@@ -160,21 +160,28 @@ const { section } = Astro.props as Props;
       formData["subject"] ||
       formData["asunto"] ||
 
-      `Nuevo mensaje de ${from.value}`;
+      `Nuevo mensaje de ${email.value}`;
 
     const extraFields = Array.from(inputs).filter((input) => {
       const name = (input as HTMLInputElement).getAttribute("name")?.toLowerCase() || "";
-      return ![from?.getAttribute("name")?.toLowerCase() || "", "subject", "asunto"].includes(name);
+      return ![email?.getAttribute("name")?.toLowerCase() || "", "subject", "asunto"].includes(name);
     }) as HTMLInputElement[];
 
     const sendData = new FormData();
-    sendData.append("to", emailContact);
-    sendData.append("from", from?.value);
+    // sendData.append("to", emailContact);
+    sendData.append("email", email?.value);
     sendData.append("subject", subject);  
     sendData.append("extraFields", JSON.stringify(extraFields.map(field => ({
       name: field.getAttribute("name"),
       value: field.value
     }))));
+
+    let loading = nativeToast({
+      message: "Enviando mensaje...",
+      position: "north-east",
+      // timeout: 0,
+      type: "info",
+    });
 
     const response = await actions.EmailSend(sendData);
     if (!response.data) {
@@ -184,6 +191,7 @@ const { section } = Astro.props as Props;
           timeout: 3000,
           type: "error",
         });
+        loading.destroy();
         return;
     } 
 
