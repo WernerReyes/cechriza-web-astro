@@ -4,9 +4,7 @@ import { URL_SITE } from "astro:env/server";
 
 export const GET: APIRoute = async () => {
   const pages = await getPages();
-
-  console.log({ pages });
-
+  
   const urls = pages
     .map(
       (page) => `
