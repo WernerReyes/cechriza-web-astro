@@ -191,9 +191,10 @@ const { section } = Astro.props as Props;
           timeout: 3000,
           type: "error",
         });
-        loading.destroy();
         return;
     } 
+
+    loading.destroy();
 
     nativeToast({
       message: "¡Mensaje enviado con éxito!",
@@ -202,6 +203,6 @@ const { section } = Astro.props as Props;
       type: "success",
     });
 
-    // form.reset();
+    form.reset();
   });
 </script>
