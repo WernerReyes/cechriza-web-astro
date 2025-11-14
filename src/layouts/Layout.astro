@@ -13,12 +13,14 @@ type Props = {
 
 const defaultDescription =
   "Expertos en la gestión del efectivo. Con más de 8000 máquinas contadoras de billetes y monedas vendidas. Contamos con servicio técnico en todo el Perú";
+
+const defaultImage = "/cechriza_logo.jpg";
 const siteName = "Cechriza S.A.C";
 
 const {
   title,
   description,
-  image = "/cechriza_logo.jpg",
+  image = defaultImage,
   url = Astro.url,
   keywords = "contadora de billetes, contadora de monedas, cechriza, servicio tecnico, mantenimiento, billete falso, recicladora de dinero, bcr, maquina contadora, perú, lima, arequipa, trujillo, cuenta, detectar, detector, contador, valorizador, clasificador, sistema de depósito, venta",
   author = "Cechriza S.A.C",
@@ -57,6 +59,7 @@ const {
     <meta name="twitter:title" content={`${title} | ${siteName}`} />
     <meta name="twitter:description" content={cardDescription} />
     <meta name="twitter:image" content={image} />
+    <meta name="twitter:creator" content={author} />
 
     <!-- Favicon y color -->
     <link rel="icon" href="/favicon.ico" />
@@ -83,9 +86,9 @@ const {
       type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "WebPage",
+        "@type": image === defaultImage ? "WebPage" : "Product",
         name: title,
-        description,
+        description: cardDescription,
         url,
         image,
       })}
