@@ -3,23 +3,27 @@ import "../styles/global.css";
 
 type Props = {
   title: string;
-  description?: string;
+  description?: string | null;
   image?: string;
   url?: string;
   keywords?: string;
   author?: string;
+  cardDescription?: string | null;
 };
+
+const defaultDescription =
+  "Expertos en la gestión del efectivo. Con más de 8000 máquinas contadoras de billetes y monedas vendidas. Contamos con servicio técnico en todo el Perú";
+const siteName = "Cechriza S.A.C";
 
 const {
   title,
-  description = "Expertos en la gestión del efectivo. Con más de 8000 máquinas contadoras de billetes y monedas vendidas. Contamos con servicio técnico en todo el Perú",
+  description,
   image = "/cechriza_logo.jpg",
   url = Astro.url,
   keywords = "contadora de billetes, contadora de monedas, cechriza, servicio tecnico, mantenimiento, billete falso, recicladora de dinero, bcr, maquina contadora, perú, lima, arequipa, trujillo, cuenta, detectar, detector, contador, valorizador, clasificador, sistema de depósito, venta",
   author = "Cechriza S.A.C",
+  cardDescription = description || defaultDescription,
 } = Astro.props as Props;
-
-const siteName = "Cechriza S.A.C";
 ---
 
 <!doctype html>
@@ -32,7 +36,7 @@ const siteName = "Cechriza S.A.C";
     <title>{title} | {siteName}</title>
     <meta name="language" content="ES" />
 
-    <meta name="description" content={description} />
+    <meta name="description" content={description || defaultDescription} />
 
     <!-- Palabras clave -->
     <meta name="keywords" content={keywords} />
@@ -42,7 +46,7 @@ const siteName = "Cechriza S.A.C";
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={cardDescription} />
     <meta property="og:image" content={image} />
     <meta property="og:url" content={url} />
     <meta property="og:type" content="website" />
@@ -51,7 +55,7 @@ const siteName = "Cechriza S.A.C";
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={`${title} | ${siteName}`} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={cardDescription} />
     <meta name="twitter:image" content={image} />
 
     <!-- Favicon y color -->
@@ -90,7 +94,6 @@ const siteName = "Cechriza S.A.C";
 
   <body>
     <main class="fondo_paralelo">
-    
       <slot />
     </main>
   </body>
@@ -189,13 +192,15 @@ const siteName = "Cechriza S.A.C";
   const activeLink = window.location.pathname.split("/").pop();
 
   const queryString = window.location.search;
-const params = new URLSearchParams(queryString);
+  const params = new URLSearchParams(queryString);
 
-const queryParam = params.keys().next().value;
-
+  const queryParam = params.keys().next().value;
 
   for (const link of links) {
-    if (link.getAttribute("href") === activeLink || link.getAttribute("href") === activeLink + `?${queryParam}`) {
+    if (
+      link.getAttribute("href") === activeLink ||
+      link.getAttribute("href") === activeLink + `?${queryParam}`
+    ) {
       link.classList.add("!text-tertiary");
     }
   }

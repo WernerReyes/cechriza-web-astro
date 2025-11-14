@@ -1,7 +1,9 @@
 ---
+import { undefined } from "astro:schema";
 import { SectionType } from "../interfaces/section.interface";
 import Layout from "../layouts/Layout.astro";
 import { getPageBySlug } from "../services/page.service";
+import { getMainImage } from "../utils/get-main-image";
 
 const page = await getPageBySlug(Astro.params.slug!);
 
@@ -53,6 +55,14 @@ const getMaintenanceComponent = async () => {
   const mod = await sectionModules["../sections/Maintenance.astro"]();
   return (mod as any).default;
 };
+
+const sectionMachineDetails = page?.sections?.find(
+  (section) => section.type === SectionType.MACHINE_DETAILS
+);
+
+const machine = sectionMachineDetails?.machines?.[0];
+
+const mainImage = machine && getMainImage(machine);
 ---
 
 {
@@ -66,7 +76,12 @@ const getMaintenanceComponent = async () => {
       ))}
     </Layout>
   ) : (
-    <Layout title={page.title}>
+    <Layout
+      title={page.title}
+      image={mainImage}
+      description={page?.description}
+      cardDescription={machine?.long_description}
+    >
       {page.sections?.length
         ? await Promise.all(
             page.sections.map(async (section) => {
