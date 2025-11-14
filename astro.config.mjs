@@ -59,11 +59,3 @@ export default defineConfig({
     }
   },
 });
-
-
-// MAIL_MAILER=smtp
-// MAIL_HOST=smtp.office365.com
-// MAIL_PORT=587
-// MAIL_USERNAME=david.yauri@cechriza.com
-// MAIL_PASSWORD=Cechriz@2930
-// MAIL_ENCRYPTION=tls
