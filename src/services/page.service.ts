@@ -20,7 +20,6 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
     const res = await fetch(`${PUBLIC_API}/page/${slug}`, {
       credentials: "include",
     }).catch((error) => {
-      console.error("Fetch error:", error);
       throw error;
     });
 
@@ -32,7 +31,6 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
 
     return data.data;
   } catch (error) {
-    console.error("Error fetching page by slug:", error);
     return null;
   }
 }
