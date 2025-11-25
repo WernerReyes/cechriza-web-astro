@@ -14,7 +14,6 @@ interface Props {
 const { section } = Astro.props as Props;
 
 const switchId = "toggleCoinBill";
-
 ---
 
 <SectionLayout
@@ -33,27 +32,21 @@ const switchId = "toggleCoinBill";
       offLabel="Billetes"
     />
   </div>
-
   {
     section.machines && (
-      <div
-        class="slider-machines animate-fadeInUp swiper "
-        role="region"
-        aria-label={`Carrusel de ${section.title}`}
-      >
-        <div class="swiper-wrapper max-w-full w-full">
+      <div class="slider-machines animate-fadeInUp  swiper" role="region">
+        <div class="swiper-wrapper flex items-stretch h-[500px]!">
           {section.machines.map((machine) => (
             <div
-              class="swiper-slide"
+              class="swiper-slide h-full"
               role="group"
               aria-label={`Máquina: ${machine.name}`}
-              aria-roledescription="slide"
             >
               <Link
                 link={machine.link}
                 aria-label={`Ver detalles de ${machine.name}`}
               >
-                <article class="machine flex flex-col items-center text-center">
+                <article class="machine flex flex-col h-full text-center">
                   <figure>
                     <img
                       src={getMainImage(machine)}
@@ -61,12 +54,18 @@ const switchId = "toggleCoinBill";
                       class="mx-auto"
                     />
                     <figcaption class="mt-2">
-                      <h3 class="text-lg font-semibold">{machine.name}</h3>
-                      <p class="text-sm text-gray-600">{machine.description}</p>
+                      <h3 class="text-lg font-semibold line-clamp-2">
+                        {machine.name}
+                      </h3>
+                      <p
+                        class="text-sm text-gray-600 line-clamp-2"
+                      >
+                        {machine.description}
+                      </p>
                     </figcaption>
                   </figure>
 
-                  <footer class="tickets flex items-center me-auto gap-2 mt-3">
+                  <footer class="tickets flex items-center gap-2 mt-auto">
                     {machine.category && (
                       <>
                         <span class="ticket">{machine.category.title}</span>
@@ -207,6 +206,7 @@ const switchId = "toggleCoinBill";
     transition: all 0.4s ease; /* transición suave */
     position: relative;
     overflow: hidden;
+    /* height: 100%; */
   }
 
   .machine img {
