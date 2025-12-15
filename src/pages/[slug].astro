@@ -62,6 +62,17 @@ const sectionMachineDetails = page?.sections?.find(
 const machine = sectionMachineDetails?.machines?.[0];
 
 const mainImage = machine && getMainImage(machine);
+
+const orderedSections =
+  page?.sections?.sort((a, b) => {
+    const pageId = page.id_page;
+    const pivotA = a.pivot_pages?.find((pivot) => pivot.id_page === pageId);
+    const pivotB = b.pivot_pages?.find((pivot) => pivot.id_page === pageId);
+    if (pivotA && pivotB) {
+      return pivotA.order_num - pivotB.order_num;
+    }
+    return 0;
+  }) || [];
 ---
 
 {
@@ -81,9 +92,9 @@ const mainImage = machine && getMainImage(machine);
       description={page?.description}
       cardDescription={machine?.long_description}
     >
-      {page.sections?.length
+      {orderedSections.length
         ? await Promise.all(
-            page.sections.map(async (section) => {
+            orderedSections.map(async (section) => {
               const Section = await getSectionComponent(section.type);
               return Section ? <Section section={section} /> : null;
             })
